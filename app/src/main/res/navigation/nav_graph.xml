@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.ewdev.parkitnow.auth.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_phoneAuthenticationFragment"
+            app:destination="@id/phoneAuthenticationFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneAuthenticationFragment"
+        android:name="com.ewdev.parkitnow.auth.PhoneAuthenticationFragment"
+        android:label="fragment_phone_authentication"
+        tools:layout="@layout/fragment_phone_authentication" >
+        <action
+            android:id="@+id/action_phoneAuthenticationFragment_to_phoneVerificationFragment"
+            app:destination="@id/phoneVerificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneVerificationFragment"
+        android:name="com.ewdev.parkitnow.auth.PhoneVerificationFragment"
+        android:label="fragment_phone_verification"
+        tools:layout="@layout/fragment_phone_verification" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ewdev.parkitnow.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+</navigation>

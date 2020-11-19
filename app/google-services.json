@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "296134061159",
+    "firebase_url": "https://parkitnow-a8dc8.firebaseio.com",
+    "project_id": "parkitnow-a8dc8",
+    "storage_bucket": "parkitnow-a8dc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296134061159:android:038980329facd2623038c2",
+        "android_client_info": {
+          "package_name": "com.ewdev.parkitnow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296134061159-ibpv3srojbqd809heann8gmmtoiclu29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt2lr8gRQePTZxSpxhoKFVL-2jzhSFywY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296134061159-ibpv3srojbqd809heann8gmmtoiclu29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
