@@ -1,6 +1,5 @@
 package com.ewdev.parkitnow.auth
 
-import android.app.Application
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +14,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.ewdev.parkitnow.R
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_splash.*
 
 class SplashFragment : Fragment() {
 
@@ -31,26 +28,41 @@ class SplashFragment : Fragment() {
 
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
-//        FirebaseAuth.getInstance().signInWithEmailAndPassword("abcd_egfh@yahoo.com", "123456")
-//            .addOnCompleteListener(authViewModel.getApplication<Application>().mainExecutor) {task ->
-//                if (task.isSuccessful) {
-////                    TODO("Logged in, go to next activity")
-//
-//                } else {
-//                    task.exception?.message.let {
-//                        Log.i("error", "did not log in")
-//                    }
-//                }
-//            }
-
-
-        authViewModel.userLiveData.observe(this, Observer { firebaseUser ->
-            if (firebaseUser != null) {
-//                    Navigation.findNavController(view!!)
-//                        .navigate(R.id.action_loginRegisterFragment_to_loggedInFragment)
-                Log.i("all good", "all good")
+        authViewModel.isLoggedInLiveData.observe(this, Observer { userIsLogged ->
+            Log.i("userIsLogged", userIsLogged.toString())
+            if (userIsLogged) {
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_splashFragment_to_homeFragment)
+                Log.i("nav_action", "completed: action_splashFragment_to_homeFragment")
+            } else {
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_splashFragment_to_phoneAuthenticationFragment)
+                Log.i("nav_action", "completed: action_splashFragment_to_phoneAuthenticationFragment")
             }
         })
+
+
+
+//        this.activity?.mainExecutor?.let {
+//            FirebaseAuth.getInstance().signInWithEmailAndPassword("abcd_egfh@yahoo.com", "123456")
+//                    .addOnCompleteListener(it) { task ->
+//                        if (task.isSuccessful) {
+////                    TODO("Logged in, go to next activity")
+//
+//                            if (FirebaseAuth.getInstance().currentUser == null) {
+//                                Log.i("error", "no one logged in")
+//                            }
+//                            authViewModel.doIt()
+//
+//
+//                        } else {
+//                            task.exception?.message.let {
+//                                Log.i("error", "did not log in")
+//                            }
+//                        }
+//                    }
+//        }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +73,7 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)  // navController has a reference to the navGraph
+//        navController = Navigation.findNavController(view)  // navController has a reference to the navGraph
 
     }
 

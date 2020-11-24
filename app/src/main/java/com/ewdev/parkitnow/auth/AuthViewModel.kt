@@ -1,20 +1,29 @@
 package com.ewdev.parkitnow.auth
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class AuthViewModel(application: Application) : AndroidViewModel(application) {
+class AuthViewModel : ViewModel() {
 
-    lateinit var authRepository: AuthRepository
-    lateinit var userLiveData: MutableLiveData<FirebaseUser>
+    private val authRepository: AuthRepository
+    val userLiveData: MutableLiveData<FirebaseUser>
+    val isLoggedInLiveData: MutableLiveData<Boolean>
 
     init {
-        authRepository = AuthRepository(application)
+        authRepository = AuthRepository()
         userLiveData = authRepository.userLiveData
+        isLoggedInLiveData = authRepository.isLoggedInData
     }
 
-
-
+//    fun requestIsLoggedInData() {
+//
+//        GlobalScope.launch {
+//            val l
+//        }
+//
+//        isLoggedInLiveData.postValue(this.userLiveData.value != null)
+//    }
 }

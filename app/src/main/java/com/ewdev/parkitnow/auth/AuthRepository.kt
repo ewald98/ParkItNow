@@ -4,23 +4,28 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.lang.Thread.sleep
 
-class AuthRepository(application: Application) {
+class AuthRepository {
 
-    lateinit var application: Application
-    lateinit var firebaseAuth: FirebaseAuth
-
-    lateinit var userLiveData: MutableLiveData<FirebaseUser>
+    val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    val userLiveData: MutableLiveData<FirebaseUser> = MutableLiveData()
+    val isLoggedInData: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        firebaseAuth = FirebaseAuth.getInstance()
-        userLiveData = MutableLiveData()
+        GlobalScope.launch{
+            sleep(1000)
 
-        val user = firebaseAuth.currentUser
+            isLoggedInData.postValue(firebaseUser != null)
+            if (firebaseUser != null)
+                userLiveData.postValue(firebaseUser)
 
-        if (user != null)
-            userLiveData.postValue(user)
+        }
     }
+
 
 
 }
