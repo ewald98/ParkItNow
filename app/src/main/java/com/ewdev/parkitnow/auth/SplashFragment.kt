@@ -2,6 +2,8 @@ package com.ewdev.parkitnow.auth
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.ewdev.parkitnow.R
-import com.google.firebase.auth.FirebaseAuth
 
 class SplashFragment : Fragment() {
 
@@ -28,9 +29,9 @@ class SplashFragment : Fragment() {
 
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
-        authViewModel.isLoggedInLiveData.observe(this, Observer { userIsLogged ->
-            Log.i("userIsLogged", userIsLogged.toString())
-            if (userIsLogged) {
+        authViewModel.isLoggedIn.observe(this, Observer { isLoggedIn ->
+            Log.i("userIsLogged", isLoggedIn.toString())
+            if (isLoggedIn) {
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_splashFragment_to_homeFragment)
                 Log.i("nav_action", "completed: action_splashFragment_to_homeFragment")
@@ -40,28 +41,6 @@ class SplashFragment : Fragment() {
                 Log.i("nav_action", "completed: action_splashFragment_to_phoneAuthenticationFragment")
             }
         })
-
-
-
-//        this.activity?.mainExecutor?.let {
-//            FirebaseAuth.getInstance().signInWithEmailAndPassword("abcd_egfh@yahoo.com", "123456")
-//                    .addOnCompleteListener(it) { task ->
-//                        if (task.isSuccessful) {
-////                    TODO("Logged in, go to next activity")
-//
-//                            if (FirebaseAuth.getInstance().currentUser == null) {
-//                                Log.i("error", "no one logged in")
-//                            }
-//                            authViewModel.doIt()
-//
-//
-//                        } else {
-//                            task.exception?.message.let {
-//                                Log.i("error", "did not log in")
-//                            }
-//                        }
-//                    }
-//        }
 
     }
 
@@ -73,8 +52,12 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        navController = Navigation.findNavController(view)  // navController has a reference to the navGraph
 
+        // wait for some time and display splash
+        Handler(Looper.getMainLooper()).postDelayed({
+            authViewModel.requestIsLoggedIn()
+        }, 2000)
+//        navController = Navigation.findNavController(view)  // navController has a reference to the navGraph
     }
 
 }

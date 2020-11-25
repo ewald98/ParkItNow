@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.fragment_phone_authentication.*
 
 class PhoneAuthenticationFragment : Fragment() {
 
-    lateinit var authViewModel: AuthViewModel
+//    lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+//        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
     }
 

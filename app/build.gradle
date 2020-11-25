@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:20.0.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.chaos.view:pinview:1.4.4'
 
     testImplementation 'junit:junit:4.+'
 

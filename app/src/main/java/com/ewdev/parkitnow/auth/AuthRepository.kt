@@ -13,17 +13,11 @@ class AuthRepository {
 
     val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     val userLiveData: MutableLiveData<FirebaseUser> = MutableLiveData()
-    val isLoggedInData: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        GlobalScope.launch{
-            sleep(1000)
+        if (firebaseUser != null)
+            userLiveData.postValue(firebaseUser)
 
-            isLoggedInData.postValue(firebaseUser != null)
-            if (firebaseUser != null)
-                userLiveData.postValue(firebaseUser)
-
-        }
     }
 
 
