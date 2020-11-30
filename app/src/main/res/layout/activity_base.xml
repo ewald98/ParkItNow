@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".BaseActivity">
+    tools:context=".view.MainActivity">
 
 <!--    The android:name attribute contains the class name of your NavHost implementation. -->
 <!--    The app:navGraph attribute associates the NavHostFragment with a navigation graph.

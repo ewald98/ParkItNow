@@ -1,20 +1,16 @@
-package com.ewdev.parkitnow.auth
+package com.ewdev.parkitnow.view.fragments
 
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.telecom.Call
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.MainThread
-import androidx.arch.core.executor.TaskExecutor
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ewdev.parkitnow.BaseActivity
 import com.ewdev.parkitnow.R
-import com.google.android.gms.tasks.TaskExecutors
+import com.ewdev.parkitnow.view.fragments.PhoneVerificationFragmentArgs
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.fragment_phone_verification.*
@@ -103,7 +99,9 @@ class PhoneVerificationFragment : Fragment() {
 
                         val user = task.result?.user
                         Toast.makeText(requireContext(), "Verification successful", Toast.LENGTH_SHORT).show()
-                        // ...
+
+                        val action = PhoneVerificationFragmentDirections.actionPhoneVerificationFragmentToHomeFragment()
+                        findNavController().navigate(action)
                     } else {
                         // Sign in failed, display a message and update the UI
                         Log.w("signIn", "signInWithCredential:failure", task.exception)

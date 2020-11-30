@@ -1,7 +1,8 @@
-package com.ewdev.parkitnow.auth
+package com.ewdev.parkitnow.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ewdev.parkitnow.auth.AuthRepository
 import com.google.firebase.auth.FirebaseUser
 
 class AuthViewModel : ViewModel() {

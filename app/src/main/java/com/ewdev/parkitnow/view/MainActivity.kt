@@ -1,9 +1,10 @@
-package com.ewdev.parkitnow
+package com.ewdev.parkitnow.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ewdev.parkitnow.R
 
-class BaseActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -44,8 +44,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
-    implementation 'com.google.firebase:firebase-auth:20.0.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
+
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'androidx.browser:browser:1.2.0' // for emulator auth support
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.chaos.view:pinview:1.4.4'
 

@@ -1,4 +1,4 @@
-package com.ewdev.parkitnow.auth
+package com.ewdev.parkitnow.view.fragments
 
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.ewdev.parkitnow.R
+import com.ewdev.parkitnow.viewModel.AuthViewModel
 
 class SplashFragment : Fragment() {
 

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.ewdev.parkitnow.auth.SplashFragment"
+        android:name="com.ewdev.parkitnow.view.fragments.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/phoneAuthenticationFragment"
-        android:name="com.ewdev.parkitnow.auth.PhoneAuthenticationFragment"
+        android:name="com.ewdev.parkitnow.view.fragments.PhoneAuthenticationFragment"
         android:label="fragment_phone_authentication"
         tools:layout="@layout/fragment_phone_authentication" >
         <action
@@ -28,16 +28,19 @@
     </fragment>
     <fragment
         android:id="@+id/phoneVerificationFragment"
-        android:name="com.ewdev.parkitnow.auth.PhoneVerificationFragment"
+        android:name="com.ewdev.parkitnow.view.fragments.PhoneVerificationFragment"
         android:label="fragment_phone_verification"
         tools:layout="@layout/fragment_phone_verification" >
         <argument
             android:name="phoneNumber"
             app:argType="string" />
+        <action
+            android:id="@+id/action_phoneVerificationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ewdev.parkitnow.HomeFragment"
+        android:name="com.ewdev.parkitnow.view.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 </navigation>
