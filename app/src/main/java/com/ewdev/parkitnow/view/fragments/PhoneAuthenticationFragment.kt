@@ -13,13 +13,8 @@ import kotlinx.android.synthetic.main.fragment_phone_authentication.*
 
 class PhoneAuthenticationFragment : Fragment() {
 
-//    lateinit var authViewModel: AuthViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-//        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
-
     }
 
     override fun onCreateView(
@@ -34,6 +29,7 @@ class PhoneAuthenticationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         next_button.setOnClickListener {
+            // TODO: add more conditition for phone_number to be correct
             val phoneNumber = "+4" + phone_number.text.toString().trim()
             Log.i("phone_number", phoneNumber)
 

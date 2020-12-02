@@ -20,6 +20,12 @@ class AuthRepository {
 
     }
 
-
+    // doesn't need to be suspend, no blocking io operation is taking place...
+    fun geUserUid(): String? {
+        if (firebaseUser != null) {
+            return firebaseUser.uid
+        }
+        return null
+    }
 
 }

@@ -14,14 +14,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.ewdev.parkitnow.R
 import com.ewdev.parkitnow.viewModel.AuthViewModel
 
 class SplashFragment : Fragment() {
 
-    // TODO: define SplashFragment as home in nav_graph.xml and use navController starting here
-    lateinit var navController: NavController
-
+    // TODO: add countdown timer and resend message
     lateinit var authViewModel: AuthViewModel
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -33,12 +32,12 @@ class SplashFragment : Fragment() {
         authViewModel.isLoggedIn.observe(this, Observer { isLoggedIn ->
             Log.i("userIsLogged", isLoggedIn.toString())
             if (isLoggedIn) {
-                Navigation.findNavController(requireView())
-                        .navigate(R.id.action_splashFragment_to_homeFragment)
+                findNavController()
+                    .navigate(R.id.action_splashFragment_to_homeFragment)
                 Log.i("nav_action", "completed: action_splashFragment_to_homeFragment")
             } else {
-                Navigation.findNavController(requireView())
-                        .navigate(R.id.action_splashFragment_to_phoneAuthenticationFragment)
+                findNavController()
+                    .navigate(R.id.action_splashFragment_to_phoneAuthenticationFragment)
                 Log.i("nav_action", "completed: action_splashFragment_to_phoneAuthenticationFragment")
             }
         })
