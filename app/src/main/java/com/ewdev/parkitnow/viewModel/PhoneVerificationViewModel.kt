@@ -4,17 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.ewdev.parkitnow.auth.AuthRepository
-import com.ewdev.parkitnow.auth.PhoneVerificationRepository
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
-import kotlinx.android.synthetic.main.fragment_phone_verification.*
-import java.util.concurrent.TimeUnit
 
 class PhoneVerificationViewModel(application: Application, phoneNumber: String) : AndroidViewModel(application) {
-
-    private val authRepository: AuthRepository = AuthRepository()
-    private val dbRepository: PhoneVerificationRepository = PhoneVerificationRepository()
 
     val smsCode: MutableLiveData<String> = MutableLiveData()
     val phoneVerified: MutableLiveData<Boolean> = MutableLiveData()
@@ -64,6 +57,10 @@ class PhoneVerificationViewModel(application: Application, phoneNumber: String) 
         signInWithPhoneAuthCredential(credential)
 
     }
+    init {
+        requestAuthOptions()
+    }
+
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         val auth = FirebaseAuth.getInstance()

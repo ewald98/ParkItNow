@@ -24,17 +24,6 @@ class AuthViewModel : ViewModel() {
 
 
     // manages the coroutines (if a viewModel is destroyed, we have to cancel started coroutines)
-    private var viewModelJob = Job()
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
-
-
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-
     fun requestIsLoggedIn() {
         _isLoggedIn.value = this.userLiveData.value != null
 //        isLoggedIn.postValue(this.userLiveData.value != null)
