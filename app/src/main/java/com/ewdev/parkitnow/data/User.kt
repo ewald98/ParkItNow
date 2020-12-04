@@ -11,7 +11,7 @@ data class User(
     val selectedCar: String?,
     @field:JvmField
     val isParked: Boolean,
-    val blockingQueue: String?
+    val queue: String?
 ) : Parcelable {
 
     companion object {
@@ -19,9 +19,9 @@ data class User(
             val phoneNo = getString("phoneNo")!!
             val selectedCar = getString("selectedCar")!!
             val isParked = getBoolean("isParked")!!
-            val blockingQueue = getString("blockingQueue")!!
+            val queue = getString("queue")!!
             // document id is uid
-            return User(id, phoneNo, selectedCar, isParked, blockingQueue)
+            return User(id, phoneNo, selectedCar, isParked, queue)
         }
     }
 }

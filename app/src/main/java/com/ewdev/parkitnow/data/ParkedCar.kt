@@ -1,15 +1,17 @@
 package com.ewdev.parkitnow.data
 
 import android.os.Parcelable
-import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.android.parcel.Parcelize
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 @Parcelize
 data class ParkedCar(
     val queueId: String,
     val licensePlate: String,
-    val departureTime: String
+    val departureTime: Date // maybe import sth different?
 ) : Parcelable {
 
     companion object {
@@ -17,22 +19,10 @@ data class ParkedCar(
             // TODO: doesn't match DB format
             val licensePlate = getString("licensePlate")!!
             // TODO: make departureTime of type Time or sth
-            val departureTime = getString("departureTime")!!
+            val departureTime = getDate("departureTime")!!
             // document id is uid
             return ParkedCar(id, licensePlate, departureTime)
         }
 
-        fun DocumentSnapshot.toParkedCars(): List<ParkedCar> {
-            val parkedCars = ArrayList<ParkedCar>()
-
-            val queue: ArrayList<HashMap<String, String>> = get("blockingQueue") as ArrayList<HashMap<String, String>>
-            queue.forEach { layer ->
-                layer.forEach { (licensePlate, departureTime) ->
-                    parkedCars.add(ParkedCar(id, licensePlate, departureTime))
-                }
-            }
-
-            return parkedCars
-        }
     }
 }

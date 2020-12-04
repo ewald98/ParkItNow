@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ewdev.parkitnow.R
@@ -34,7 +33,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.blockedBy.observe(viewLifecycleOwner, Observer { parkedCars ->
+        viewModel.blockedCars.observe(viewLifecycleOwner, Observer { parkedCars ->
             var s = ""
             parkedCars.forEach{
                 s += it.licensePlate + " "
