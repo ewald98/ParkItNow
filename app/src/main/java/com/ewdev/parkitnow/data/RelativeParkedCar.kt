@@ -4,5 +4,5 @@ import java.util.*
 
 data class RelativeParkedCar(
         val licensePlate: String,
-        val leavingIn: String
+        val departureTimeInfo: String
         )

@@ -1,5 +1,6 @@
 package com.ewdev.parkitnow.data
 
+import com.ewdev.parkitnow.utils.Helper
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import java.util.*
@@ -8,7 +9,7 @@ import kotlin.collections.HashMap
 
 class CarQueue(val carQueue: ArrayList<ArrayList<ParkedCar>>) {
 
-    fun getBlockedCars(carLicensePlate: String): ArrayList<RelativeParkedCar> {
+    fun getBlockedCars(carLicensePlate: String): ArrayList<ParkedCar> {
         val blockedCars = ArrayList<ParkedCar>()
 
         for ((i, layer) in carQueue.withIndex()) {
@@ -21,22 +22,30 @@ class CarQueue(val carQueue: ArrayList<ArrayList<ParkedCar>>) {
             }
         }
 
-        val now = Date()
-        val blockedCars2: ArrayList<RelativeParkedCar> = blockedCars.map { car ->
-            RelativeParkedCar(
-                    car.licensePlate,
-                    (car.departureTime.time - Date().time).toString()
-            )
-        } as ArrayList<RelativeParkedCar>
+        return blockedCars
+    }
 
-        return blockedCars2
+    fun getBlockerCars(carLicensePlate: String): ArrayList<ParkedCar> {
+        val blockerCars = ArrayList<ParkedCar>()
+
+        val carLayer = getCarLayer(carLicensePlate)
+        for (i in carQueue.size - 1 downTo carLayer + 1)  {
+            carQueue[i].forEach { car -> blockerCars.add(car) }
+        }
+
+        return blockerCars
     }
 
     fun isInLayer(carLicensePlate: String, layer: ArrayList<ParkedCar>): Boolean {
         return layer.any { parkedCar -> carLicensePlate.equals(parkedCar.licensePlate) }
     }
 
+    fun getCarLayer(carLicensePlate: String): Int {
+        return carQueue.indexOfFirst{ layer: ArrayList<ParkedCar> -> isInLayer(carLicensePlate, layer)}
+    }
+
     companion object {
+
         fun DocumentSnapshot.toCarQueue(): CarQueue {
             val parkedCars = ArrayList<ArrayList<ParkedCar>>()
 

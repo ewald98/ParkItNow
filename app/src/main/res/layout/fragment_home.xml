@@ -22,19 +22,20 @@
             android:text="Blocking:" />
 
         <TextView
-            android:id="@+id/blocking_tv"
+            android:id="@+id/blocked_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="" />
 
         <TextView
-            android:id="@+id/blocked_by_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
             android:text="Blocked by:" />
 
         <TextView
+            android:id="@+id/blocker_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />
