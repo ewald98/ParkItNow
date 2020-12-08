@@ -9,9 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ewdev.parkitnow.R
 import com.ewdev.parkitnow.viewModel.HomeFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home_parked.*
 
-class HomeFragment : Fragment() {
+class HomeParkedFragment : Fragment() {
 
     lateinit var viewModel: HomeFragmentViewModel
 
@@ -27,11 +27,27 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_home_parked, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        viewModel.isParked.observe(viewLifecycleOwner, Observer { isParked ->
+//            Log.i("parked", isParked.toString())
+//            if (isParked) {
+//                // init fragment_home_parked
+//                val pieceFragment = HomeParkedFragment()
+//                pieceFragment.setViewModel(viewModel)
+//                val transaction = childFragmentManager.beginTransaction()
+//                transaction.add(R.id.homeMainFragment, pieceFragment).commit()
+//            } else {
+//                // init fragment_home_unparked
+//                val pieceFragment = HomeUnparkedFragment()
+//                val transaction = childFragmentManager.beginTransaction()
+//                transaction.add(R.id.homeMainFragment, pieceFragment).commit()
+//            }
+//        })
 
         viewModel.blockedCars.observe(viewLifecycleOwner, Observer { parkedCars ->
             var s = ""
@@ -48,6 +64,7 @@ class HomeFragment : Fragment() {
             }
             blocker_tv.text = s
         })
-    }
 
+
+    }
 }

@@ -12,8 +12,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.ewdev.parkitnow.R
 import com.ewdev.parkitnow.viewModel.AuthViewModel
@@ -32,9 +30,18 @@ class SplashFragment : Fragment() {
         authViewModel.isLoggedIn.observe(this, Observer { isLoggedIn ->
             Log.i("userIsLogged", isLoggedIn.toString())
             if (isLoggedIn) {
-                findNavController()
-                    .navigate(R.id.action_splashFragment_to_homeFragment)
-                Log.i("nav_action", "completed: action_splashFragment_to_homeFragment")
+                authViewModel.requestIsParked()
+                authViewModel.isParked.observe(viewLifecycleOwner, Observer { isParked ->
+                    if (isParked) {
+                        findNavController()
+                                .navigate(R.id.action_splashFragment_to_homeParkedFragment)
+                        Log.i("nav_action", "completed: action_splashFragment_to_homeParkedFragment")
+                    } else {
+                        findNavController()
+                                .navigate(R.id.action_splashFragment_to_homeUnparkedFragment)
+                        Log.i("nav_action", "completed: action_splashFragment_to_homeUnparkedFragment")
+                    }
+                })
             } else {
                 findNavController()
                     .navigate(R.id.action_splashFragment_to_phoneAuthenticationFragment)

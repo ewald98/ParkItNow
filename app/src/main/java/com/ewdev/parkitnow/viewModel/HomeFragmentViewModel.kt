@@ -23,15 +23,20 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
 
     private lateinit var user: User
 
-    val _blockedCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
-    val _blockerCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
+    private val _isParked: MutableLiveData<Boolean> = MutableLiveData()
+    private val _blockedCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
+    private val _blockerCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
 
+    val isParked: LiveData<Boolean> get() = _isParked
     val blockedCars: LiveData<List<RelativeParkedCar>> get() = _blockedCars
     val blockerCars: LiveData<List<RelativeParkedCar>> get() = _blockerCars
 
     init {
         viewModelScope.launch {
             user = FirebaseService.getUser(firebaseUser!!.uid)!!
+
+            _isParked.value = user.isParked
+
             val carQueue = FirebaseService.getCarQueue(user.queue!!)
 
             val blockedCars = carQueue.getBlockedCars(user.selectedCar!!)

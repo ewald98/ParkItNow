@@ -3,9 +3,14 @@ package com.ewdev.parkitnow.viewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.ewdev.parkitnow.auth.FirebaseService
+import com.ewdev.parkitnow.data.User
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
+import kotlinx.coroutines.launch
 
 class PhoneVerificationViewModel(application: Application, phoneNumber: String) : AndroidViewModel(application) {
 
@@ -14,6 +19,10 @@ class PhoneVerificationViewModel(application: Application, phoneNumber: String) 
 
     val callbackLiveData: MutableLiveData<PhoneAuthProvider.OnVerificationStateChangedCallbacks> = MutableLiveData()
 
+    private val _isParked: MutableLiveData<Boolean> = MutableLiveData()
+    val isParked: LiveData<Boolean> get() = _isParked
+
+    private lateinit var user: User
 
     lateinit var codeGenerated: String
     val context = getApplication<Application>().applicationContext
@@ -72,6 +81,11 @@ class PhoneVerificationViewModel(application: Application, phoneNumber: String) 
                     Log.d("signIn", "signInWithCredential:success")
 
                     phoneVerified.value = true
+                    viewModelScope.launch {
+                        user = FirebaseService.getUser(auth.currentUser!!.uid)!!
+
+                        _isParked.value = user.isParked
+                    }
 
                     val user = task.result?.user
 //                    Toast.makeText(context as Activity, "Verification successful", Toast.LENGTH_SHORT).show()

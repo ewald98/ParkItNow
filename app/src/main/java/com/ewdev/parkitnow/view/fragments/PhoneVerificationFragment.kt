@@ -64,8 +64,17 @@ class PhoneVerificationFragment : Fragment() {
 
         phoneVerificationViewModel.phoneVerified.observe(viewLifecycleOwner, Observer { signedIn ->
             if (signedIn) {
-                val action = PhoneVerificationFragmentDirections.actionPhoneVerificationFragmentToHomeFragment()
-                findNavController().navigate(action)
+                phoneVerificationViewModel.isParked.observe(viewLifecycleOwner, Observer { isParked ->
+                    if (isParked) {
+                        val action = PhoneVerificationFragmentDirections.actionPhoneVerificationFragmentToHomeParkedFragment()
+                        findNavController().navigate(action)
+                        Log.i("nav_action", "completed: action_splashFragment_to_homeParkedFragment")
+                    } else {
+                        val action = PhoneVerificationFragmentDirections.actionPhoneVerificationFragmentToHomeUnparkedFragment()
+                        findNavController().navigate(action)
+                        Log.i("nav_action", "completed: action_splashFragment_to_homeUnparkedFragment")
+                    }
+                })
             } else {
 
             }
