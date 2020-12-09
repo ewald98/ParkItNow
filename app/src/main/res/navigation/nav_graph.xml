@@ -52,13 +52,28 @@
     <fragment
         android:id="@+id/parkCarFragment"
         android:name="com.ewdev.parkitnow.view.fragments.ParkCarFragment"
-        android:label="ParkCarFragment" />
+        android:label="ParkCarFragment" >
+        <action
+            android:id="@+id/action_parkCarFragment_to_addCarFragment"
+            app:destination="@id/addCarFragment" />
+        <action
+            android:id="@+id/action_parkCarFragment_to_homeParkedFragment"
+            app:destination="@id/homeParkedFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeUnparkedFragment"
         android:name="com.ewdev.parkitnow.view.fragments.HomeUnparkedFragment"
         android:label="HomeUnparkedFragment" >
         <action
             android:id="@+id/action_homeUnparkedFragment_to_parkCarFragment"
+            app:destination="@id/parkCarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCarFragment"
+        android:name="com.ewdev.parkitnow.view.fragments.AddCarFragment"
+        android:label="AddCarFragment" >
+        <action
+            android:id="@+id/action_addCarFragment_to_parkCarFragment"
             app:destination="@id/parkCarFragment" />
     </fragment>
 </navigation>
