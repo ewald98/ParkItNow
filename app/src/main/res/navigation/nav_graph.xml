@@ -59,6 +59,11 @@
         <action
             android:id="@+id/action_parkCarFragment_to_homeParkedFragment"
             app:destination="@id/homeParkedFragment" />
+        <argument
+            android:name="car"
+            app:argType="com.ewdev.parkitnow.data.ParkedCar"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/homeUnparkedFragment"
@@ -74,6 +79,8 @@
         android:label="AddCarFragment" >
         <action
             android:id="@+id/action_addCarFragment_to_parkCarFragment"
-            app:destination="@id/parkCarFragment" />
+            app:destination="@+id/parkCarFragment"
+            app:popUpTo="@+id/parkCarFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

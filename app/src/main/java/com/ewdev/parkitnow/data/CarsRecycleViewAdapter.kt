@@ -8,20 +8,20 @@ import com.ewdev.parkitnow.R
 import kotlinx.android.synthetic.main.item_car.view.*
 
 class CarsRecycleViewAdapter(
-        private val relativeParkedCars: List<RelativeParkedCar>,
-        private val onDeleteClick: (RelativeParkedCar) -> (Unit)
+        private val parkedCars: List<ParkedCar>,
+        private val onDeleteClick: (ParkedCar) -> (Unit)
 ): RecyclerView.Adapter<CarsRecycleViewAdapter.CarViewHolder>() {
 
     inner class CarViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         init {
             itemView.ibt_delete.setOnClickListener {
-                onDeleteClick(relativeParkedCars[adapterPosition])
+                onDeleteClick(parkedCars[adapterPosition])
             }
 
         }
 
-        fun bind(car: RelativeParkedCar) {
+        fun bind(car: ParkedCar) {
             itemView.tv_license_plate.text = car.licensePlate
         }
 
@@ -33,11 +33,11 @@ class CarsRecycleViewAdapter(
     }
 
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
-        holder.bind(relativeParkedCars[position])
+        holder.bind(parkedCars[position])
     }
 
     override fun getItemCount(): Int {
-        return relativeParkedCars.size
+        return parkedCars.size
     }
 
 }

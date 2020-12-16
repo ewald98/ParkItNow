@@ -37,7 +37,7 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
 
             _isParked.value = user.isParked
 
-            val carQueue = FirebaseService.getCarQueue(user.queue!!)
+            val carQueue = FirebaseService.getQueue(user.queue!!)
 
             val blockedCars = carQueue.getBlockedCars(user.selectedCar!!)
             _blockedCars.value = toViewFormat(blockedCars)

@@ -16,12 +16,10 @@ data class ParkedCar(
 
     companion object {
         fun DocumentSnapshot.toParkedCar(): ParkedCar? {
-            // TODO: doesn't match DB format
-            val licensePlate = getString("licensePlate")!!
-            // TODO: make departureTime of type Time or sth
+            val blockingQueue = getString("blockingQueue")!!
             val departureTime = getDate("departureTime")!!
-            // document id is uid
-            return ParkedCar(id, licensePlate, departureTime)
+            // TODO: add phoneNO
+            return ParkedCar(blockingQueue, id, departureTime)
         }
 
     }

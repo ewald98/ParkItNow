@@ -52,7 +52,7 @@ class HomeParkedFragment : Fragment() {
         viewModel.blockedCars.observe(viewLifecycleOwner, Observer { parkedCars ->
             var s = ""
             parkedCars.forEach{
-                s += it.licensePlate + " " + it.departureTimeInfo + "/"
+                s += it.licensePlate + " " + it.relativeDepartureTime + "/"
             }
             blocked_tv.text = s
         })
@@ -60,7 +60,7 @@ class HomeParkedFragment : Fragment() {
         viewModel.blockerCars.observe(viewLifecycleOwner, Observer { parkedCars ->
             var s = ""
             parkedCars.forEach{
-                s += it.licensePlate + " " + it.departureTimeInfo + "/"
+                s += it.licensePlate + " " + it.relativeDepartureTime + "/"
             }
             blocker_tv.text = s
         })
