@@ -1,7 +1,7 @@
 package com.ewdev.parkitnow.auth
 
+import android.util.Log
 import com.ewdev.parkitnow.data.CarQueue
-import com.ewdev.parkitnow.data.CarQueue.Companion.toCarQueue
 import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.data.ParkedCar.Companion.toParkedCar
 import com.ewdev.parkitnow.data.User
@@ -22,13 +22,28 @@ object FirebaseService {
             .toUser()
     }
 
-    suspend fun getQueue(queueId: String): CarQueue {
+    suspend fun getQueue(root: String): List<ParkedCar> {
         return db
-            .collection("queues")
-            .document(queueId)
+            .collection("cars")
+            .whereArrayContains("roots", root)
             .get()
             .await()
-            .toCarQueue()
+            .documents
+            .map { doc -> doc.toParkedCar() }
+    }
+
+    /*
+    More efficient than getQueue (doesn't require requesting two separate queues which may contain
+    the same element)
+     */
+    suspend fun getQueues(roots: List<String>): List<ParkedCar> {
+        return db
+                .collection("cars")
+                .whereArrayContainsAny("roots", roots)
+                .get()
+                .await()
+                .documents
+                .map { doc -> doc.toParkedCar() }
     }
 
     suspend fun isValidCar(licensePlate: String): Boolean {
@@ -52,6 +67,23 @@ object FirebaseService {
         else
             return null
 
+    }
+
+    suspend fun updateQueue(queueId: String, carQueue: CarQueue) {
+        db
+                .collection("queues")
+                .document(queueId)
+                .update("carQueue", carQueue.toFirebaseFormat())
+                .await()
+    }
+
+    suspend fun updateCarQueue(car: ParkedCar) {
+        db
+                .collection("cars")
+//                .where
+                .document(car.licensePlate)
+//                .update("blockingQueue", car.queueId)
+//                .await()
     }
 
 }

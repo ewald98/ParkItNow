@@ -25,34 +25,32 @@ class AddCarFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add_car, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fab_finish.setOnClickListener {
-
-            val car = ParkedCar("whatevz", add_car_edtx.text.toString(), Date())
-
-            viewModel.requestCarValidity(car)
-            viewModel.validCar.observe(viewLifecycleOwner, androidx.lifecycle.Observer { valid ->
-                if (valid) {
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set("car", car)
-                    findNavController().popBackStack()
-                } else {
-                    Toast.makeText(
-                            requireActivity(),
-                            "Invalid car" + car.licensePlate,
-                            Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-
-
+//        fab_finish.setOnClickListener {
+//
+//            val car = ParkedCar("whatevz", add_car_edtx.text.toString(), Date())
+//
+//            viewModel.requestCarValidity(car)
+//            viewModel.validCar.observe(viewLifecycleOwner, androidx.lifecycle.Observer { valid ->
+//                if (valid) {
+//                    findNavController().previousBackStackEntry?.savedStateHandle?.set("car", car)
+//                    findNavController().popBackStack()
+//                } else {
+//                    Toast.makeText(
+//                            requireActivity(),
+//                            "Invalid car" + car.licensePlate,
+//                            Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            })
+//
 
 //            onDestroy()
-        }
+//        }
 
     }
 

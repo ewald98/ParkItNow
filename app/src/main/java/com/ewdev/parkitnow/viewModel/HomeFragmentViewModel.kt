@@ -1,11 +1,13 @@
 package com.ewdev.parkitnow.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ewdev.parkitnow.auth.FirebaseService
+import com.ewdev.parkitnow.data.CarQueue
 import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.data.RelativeParkedCar
 import com.ewdev.parkitnow.data.User
@@ -37,16 +39,26 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
 
             _isParked.value = user.isParked
 
-            val carQueue = FirebaseService.getQueue(user.queue!!)
+            val userCar = FirebaseService.getCar(user.selectedCar!!)
+
+            // get car queues.
+            // for each car queue get blocker/blocked
+
+            val cars = FirebaseService.getQueues(userCar!!.roots)
+
+            val carQueue = CarQueue(CarQueue.carsToCarQueueFormat(cars), userCar.roots)
+
+            Log.i("ce", "ce")
 
             val blockedCars = carQueue.getBlockedCars(user.selectedCar!!)
             _blockedCars.value = toViewFormat(blockedCars)
-
+//
             val blockerCars = carQueue.getBlockerCars(user.selectedCar!!)
             _blockerCars.value = toViewFormat(blockerCars)
 
         }
     }
+
 
     private fun toViewFormat(blockedCars: ArrayList<ParkedCar>): List<RelativeParkedCar> {
         val now = Date()
