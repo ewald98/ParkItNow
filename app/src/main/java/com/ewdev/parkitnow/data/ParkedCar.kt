@@ -23,7 +23,7 @@ data class ParkedCar(
             val roots: List<String> = get("roots") as List<String>
             val departureTime = Calendar.getInstance()
             departureTime.time = getDate("departureTime")!!
-            // TODO?: add phoneNO
+            // TODO?: add phoneNO -> idk...
             return ParkedCar(id, departureTime, roots, blocking)
         }
 

@@ -9,8 +9,6 @@ data class DayTime(
 ) {
     // TODO: should this and ParkedCar be data classes?
 
-    // TODO: should be able to park for days?
-
     override fun toString(): String {
         val calendar: Calendar = Calendar.getInstance()
         calendar.set(0, 0, 0, hour, minute)

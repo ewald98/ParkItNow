@@ -78,21 +78,4 @@ object FirebaseService {
                 .await()
     }
 
-    suspend fun updateQueue(queueId: String, carQueue: CarQueue) {
-        db
-                .collection("queues")
-                .document(queueId)
-                .update("carQueue", carQueue.toFirebaseFormat())
-                .await()
-    }
-
-    suspend fun updateCarQueue(car: ParkedCar) {
-        db
-                .collection("cars")
-//                .where
-                .document(car.licensePlate)
-//                .update("blockingQueue", car.queueId)
-//                .await()
-    }
-
 }

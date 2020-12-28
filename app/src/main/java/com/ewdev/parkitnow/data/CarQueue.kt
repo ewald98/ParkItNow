@@ -116,16 +116,6 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
     private fun lastElementIsUserCar(path: java.util.ArrayList<ParkedCar>, carLicensePlate: String) =
             path.last().licensePlate == carLicensePlate
 
-    fun isInLayer(carLicensePlate: String, layer: ArrayList<ParkedCar>): Boolean {
-        TODO("REDO")
-//        return layer.any { parkedCar -> carLicensePlate.equals(parkedCar.licensePlate) }
-    }
-
-    fun getCarLayer(carLicensePlate: String): Int {
-        TODO("REDO")
-//        return carQueue.indexOfFirst{ layer: ArrayList<ParkedCar> -> isInLayer(carLicensePlate, layer)}
-    }
-
     companion object {
 
         fun mergeQueues() {
@@ -152,21 +142,6 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
             return false
         }
 
-    }
-
-    fun toFirebaseFormat(): ArrayList<HashMap<String, Timestamp>> {
-        TODO("UPDATE")
-//        val firebaseCars: ArrayList<HashMap<String, Timestamp>> = ArrayList()
-//
-//        for (layer in carQueue) {
-//            val firebaseMap: HashMap<String, Timestamp> = HashMap()
-//            for (car in layer) {
-//                firebaseMap.put(car.licensePlate, Timestamp(car.departureTime))
-//            }
-//            firebaseCars.add(firebaseMap)
-//        }
-//
-//        return firebaseCars
     }
 
 }
