@@ -13,13 +13,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ParkCarViewModel(application: Application) : AndroidViewModel(application) {
 
     private lateinit var user: User
 
-    val leaveTime: MutableLiveData<DayTime> = MutableLiveData()
+    val leaveTime: MutableLiveData<Calendar> = MutableLiveData()
     val blockedCars: MutableLiveData<List<ParkedCar>> = MutableLiveData()
 
     val _blockedCars: ArrayList<ParkedCar> = ArrayList()
@@ -33,10 +34,10 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun onTimeSet(hourOfDay: Int, minute: Int) {
-        leaveTime.value = DayTime(hourOfDay, minute)
+    fun onTimeSet(calendar: Calendar) {
+        leaveTime.value = calendar
 
-        // TODO: make sure (now > date)
+        // TODO: make sure (now < date)
     }
 
     fun removeFromList(car: ParkedCar) {
@@ -57,24 +58,26 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
 //        _blockedCars
 //        leaveTime
         GlobalScope.launch {
-            // TODO: commit changes
+            // TODO: make sure date is set
 
-//            // 1. change queue(s)
-//            _blockedCars
-//                    .map { car -> car.queueId }
-//                    .distinct()     // in case user introduces two cars that are part of the same queue
+            // TODO: update parked in User (FOR DEBUGGING, DO NOT YET)
 
-            // queues updated, I have the new(actually old) queueId
-//            val queueId
 
-            // 2. update cars
-//            FirebaseService.updateCarQueue(userCar)
-//            for (car in )
+            // get roots from all blocked cars
+            val roots = _blockedCars
+                    .map { car -> car.roots }
+                    .flatten()
+                    .distinct()
 
-            // 3. update users (nah, better not)
+            val blocking = _blockedCars
+                    .map { car -> car.licensePlate }
 
-            // TODO: ch
-
+            FirebaseService.setCar(ParkedCar(
+                    user.selectedCar!!,
+                    leaveTime.value!!,
+                    roots,
+                    blocking
+            ))
 
         }
     }

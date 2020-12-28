@@ -33,26 +33,10 @@ class HomeParkedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        viewModel.isParked.observe(viewLifecycleOwner, Observer { isParked ->
-//            Log.i("parked", isParked.toString())
-//            if (isParked) {
-//                // init fragment_home_parked
-//                val pieceFragment = HomeParkedFragment()
-//                pieceFragment.setViewModel(viewModel)
-//                val transaction = childFragmentManager.beginTransaction()
-//                transaction.add(R.id.homeMainFragment, pieceFragment).commit()
-//            } else {
-//                // init fragment_home_unparked
-//                val pieceFragment = HomeUnparkedFragment()
-//                val transaction = childFragmentManager.beginTransaction()
-//                transaction.add(R.id.homeMainFragment, pieceFragment).commit()
-//            }
-//        })
-
         viewModel.blockedCars.observe(viewLifecycleOwner, Observer { parkedCars ->
             var s = ""
             parkedCars.forEach{
-                s += it.licensePlate + " " + it.relativeDepartureTime + "/"
+                s += it.licensePlate + " " + it.relativeDepartureTime + "\n"
             }
             blocked_tv.text = s
         })
@@ -60,7 +44,7 @@ class HomeParkedFragment : Fragment() {
         viewModel.blockerCars.observe(viewLifecycleOwner, Observer { parkedCars ->
             var s = ""
             parkedCars.forEach{
-                s += it.licensePlate + " " + it.relativeDepartureTime + "/"
+                s += it.licensePlate + " " + it.relativeDepartureTime + "\n"
             }
             blocker_tv.text = s
         })

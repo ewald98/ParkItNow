@@ -11,10 +11,15 @@ import kotlinx.coroutines.launch
 class AddCarViewModel(application: Application): AndroidViewModel(application) {
 
     val validCar: MutableLiveData<Boolean> = MutableLiveData()
+    val car: MutableLiveData<ParkedCar> = MutableLiveData()
 
-    fun requestCarValidity(car: ParkedCar) {
+    fun requestCarValidity(carId: String) {
         viewModelScope.launch {
-            validCar.value = FirebaseService.getCar(car.licensePlate) != null
+            val verifiedCar = FirebaseService.getCar(carId)
+            validCar.value = verifiedCar != null
+            if (verifiedCar != null) {
+                car.value = verifiedCar
+            }
         }
     }
 

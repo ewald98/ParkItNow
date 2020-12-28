@@ -3,6 +3,7 @@ package com.ewdev.parkitnow.auth
 import android.util.Log
 import com.ewdev.parkitnow.data.CarQueue
 import com.ewdev.parkitnow.data.ParkedCar
+import com.ewdev.parkitnow.data.ParkedCar.Companion.toFirebaseFormat
 import com.ewdev.parkitnow.data.ParkedCar.Companion.toParkedCar
 import com.ewdev.parkitnow.data.User
 import com.ewdev.parkitnow.data.User.Companion.toUser
@@ -67,6 +68,14 @@ object FirebaseService {
         else
             return null
 
+    }
+
+    suspend fun setCar(car: ParkedCar) {
+        db
+                .collection("cars")
+                .document(car.licensePlate)
+                .update(car.toFirebaseFormat())
+                .await()
     }
 
     suspend fun updateQueue(queueId: String, carQueue: CarQueue) {

@@ -33,7 +33,7 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
             blockedCars.addAll(currentBlocking)
         }
 
-        return blockedCars
+        return blockedCars.distinct() as ArrayList<ParkedCar>
 
     }
 

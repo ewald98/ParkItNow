@@ -1,6 +1,7 @@
 package com.ewdev.parkitnow.data
 
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -10,7 +11,7 @@ import kotlin.collections.HashMap
 @Parcelize
 data class ParkedCar(
         val licensePlate: String,
-        val departureTime: Date, // maybe import sth different?
+        val departureTime: Calendar,
         val roots: List<String>,
         val blocking: List<String>
 ) : Parcelable {
@@ -20,12 +21,21 @@ data class ParkedCar(
         fun DocumentSnapshot.toParkedCar(): ParkedCar {
             val blocking: List<String> = get("blocking") as List<String>
             val roots: List<String> = get("roots") as List<String>
-            val departureTime = getDate("departureTime")!!
-            // TODO: add phoneNO
+            val departureTime = Calendar.getInstance()
+            departureTime.time = getDate("departureTime")!!
+            // TODO?: add phoneNO
             return ParkedCar(id, departureTime, roots, blocking)
         }
 
-//        fun toFirebaseFormat():
+        fun ParkedCar.toFirebaseFormat(): HashMap<String, Any> {
+            val firebaseCar = HashMap<String, Any>()
+
+            firebaseCar.put("blocking", blocking)
+            firebaseCar.put("departureTime", Timestamp(departureTime.time))
+            firebaseCar.put("roots", roots)
+
+            return firebaseCar
+        }
 
     }
 

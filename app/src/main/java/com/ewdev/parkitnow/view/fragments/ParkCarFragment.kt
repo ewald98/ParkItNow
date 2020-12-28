@@ -1,12 +1,16 @@
 package com.ewdev.parkitnow.view.fragments
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +22,11 @@ import com.ewdev.parkitnow.data.CarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.viewModel.ParkCarViewModel
 import kotlinx.android.synthetic.main.fragment_park_car.*
+import android.text.format.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.Objects.isNull
+import kotlin.math.min
 
 class ParkCarFragment: Fragment() {
 
@@ -51,23 +59,48 @@ class ParkCarFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.leaveTime.observe(viewLifecycleOwner, Observer { leaveTime ->
-            leave_time_tv.text = leaveTime.toString()
+            leave_time_tv.text = DateFormat.format("yyyy-MM-dd\n HH:mm:ss", leaveTime)
         })
 
+        // TODO: add date
         leave_time_tv.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(
-                    context,
-                    object : TimePickerDialog.OnTimeSetListener {
-                        override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                            viewModel.onTimeSet(hourOfDay, minute)
+
+            val currentSetCal: Calendar = viewModel.leaveTime.value ?: Calendar.getInstance()
+            Log.i("cal", currentSetCal.toString())
+            val datePickerDialog = DatePickerDialog(
+                    requireContext(),
+                    object: DatePickerDialog.OnDateSetListener {
+                        override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                            // *do stuff*
+
+                            val timePickerDialog = TimePickerDialog(
+                                    requireContext(),
+                                    object : TimePickerDialog.OnTimeSetListener {
+                                        override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+                                            val calendar = GregorianCalendar(
+                                                    year,
+                                                    month,
+                                                    dayOfMonth,
+                                                    hourOfDay,
+                                                    minute
+                                            )
+                                            viewModel.onTimeSet(calendar)
+                                        }
+                                    },
+                                    currentSetCal.get(Calendar.HOUR),
+                                    currentSetCal.get(Calendar.MINUTE),
+                                    true
+                            )
+//            timePickerDialog.updateTime(viewModel.leaveTime.value!!.hour, viewModel.leaveTime.value!!.minute)
+                            timePickerDialog.show()
                         }
                     },
-                    viewModel.leaveTime.value?.hour ?: 12,
-                    viewModel.leaveTime.value?.minute ?: 0,
-                    false
+                    currentSetCal.get(Calendar.YEAR),
+                    currentSetCal.get(Calendar.MONTH),
+                    currentSetCal.get(Calendar.DAY_OF_MONTH)
             )
-//            timePickerDialog.updateTime(viewModel.leaveTime.value!!.hour, viewModel.leaveTime.value!!.minute)
-            timePickerDialog.show()
+            datePickerDialog.show()
+
 
         }
 
@@ -77,13 +110,13 @@ class ParkCarFragment: Fragment() {
 
         initList()
 
+        // TODO("fix navigation, currently when popping backstack weird things happen, for example pressing the back button makes the past arg remain and so we end up with two same licensePlates")
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ParkedCar>("car")?.observe(viewLifecycleOwner, Observer {
             result -> viewModel.addCar(result)
         })
 
         fab_next.setOnClickListener {
-
-
+            viewModel.parkCar()
             findNavController().navigate(R.id.action_parkCarFragment_to_homeParkedFragment)
         }
     }

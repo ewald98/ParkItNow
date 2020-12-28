@@ -62,7 +62,13 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
 
     private fun toViewFormat(blockedCars: ArrayList<ParkedCar>): List<RelativeParkedCar> {
         val now = Date()
-        val blockedCars2: ArrayList<RelativeParkedCar> = blockedCars.map { car ->
+
+        blockedCars
+                .sortWith(compareByDescending { car -> car.departureTime })
+
+        val blockedCars2: ArrayList<RelativeParkedCar> = blockedCars
+                .asReversed()
+                .map { car ->
             RelativeParkedCar(
                     car.licensePlate,
                     Helper.toStringDateFormat(car.departureTime)
