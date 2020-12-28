@@ -6,6 +6,8 @@ import kotlin.collections.HashMap
 
 class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>) {
 
+    // TODO("LATER: improve getBlockedCars & getBlockerCars to include more cases")
+
     fun getBlockedCars(carLicensePlate: String): ArrayList<ParkedCar> {
 
         val blockedCars = ArrayList<ParkedCar>()
@@ -33,31 +35,86 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
 
         return blockedCars
 
-//
-//        for ((i, layer) in carQueue.withIndex()) {
-//            if (isInLayer(carLicensePlate, layer)) {
-//                break;
-//            } else {
-//                layer.forEach { car ->
-//                    blockedCars.add(car)
-//                }
-//            }
-//        }
-//
-//        return blockedCars
     }
 
     fun getBlockerCars(carLicensePlate: String): ArrayList<ParkedCar> {
-        TODO("REDO")
-//        val blockerCars = ArrayList<ParkedCar>()
-//
-//        val carLayer = getCarLayer(carLicensePlate)
-//        for (i in carQueue.size - 1 downTo carLayer + 1)  {
-//            carQueue[i].forEach { car -> blockerCars.add(car) }
-//        }
-//
-//        return blockerCars
+
+        var paths = ArrayList<ArrayList<ParkedCar>>()
+
+        val blockedCars = carQueue
+                .map { (_, car) -> car.blocking }
+                .flatten()
+                .distinct()
+
+        val unobstructedCars = carQueue
+                .map { (_, car) -> car.licensePlate }
+                .filter { licensePlate -> !(licensePlate in blockedCars) }
+
+        // init array with every unobstructedCar
+        for (licensePlate in unobstructedCars) {
+            paths.add(ArrayList())
+            paths.last().add(carQueue[licensePlate]!!)
+        }
+
+        while (!foundAllPaths(paths, carLicensePlate, roots)) {
+            val newPaths = ArrayList<ArrayList<ParkedCar>>()
+            for (i in 0 until paths.size) {
+                newPaths.addAll(growPath(paths[i], carLicensePlate))
+            }
+            paths = newPaths
+        }
+
+        paths = paths.filter { path ->
+            (path.contains(carQueue[carLicensePlate]))
+        } as ArrayList<ArrayList<ParkedCar>>
+
+        val blockedCarsByUser = getBlockedCars(carLicensePlate)
+
+        return paths
+                .flatten()
+                .distinct()
+                .filter { car ->
+                    !(car in blockedCarsByUser) && !(car.licensePlate == carLicensePlate)
+                } as ArrayList<ParkedCar>
+
     }
+
+    private fun growPath(path: ArrayList<ParkedCar>, carLicensePlate: String): ArrayList<ArrayList<ParkedCar>> {
+        val newPaths = ArrayList<ArrayList<ParkedCar>>()
+
+        if (lastElementIsRoot(path) || lastElementIsUserCar(path, carLicensePlate)) {
+            newPaths.add(path)
+            return newPaths
+        }
+
+        val blockedCars = path.last().blocking
+
+        for (j in 0 until blockedCars.size) {
+            val newPath = ArrayList<ParkedCar>()
+            newPath.addAll(path)
+            newPath.add(carQueue[blockedCars[j]]!!)
+            newPaths.add(newPath)
+        }
+
+        return newPaths
+    }
+
+    private fun lastElementIsRoot(path: ArrayList<ParkedCar>) =
+            path.last().blocking.isEmpty()
+
+    private fun foundAllPaths(paths: ArrayList<ArrayList<ParkedCar>>, carLicensePlate: String, roots: List<String>): Boolean {
+
+        for (path in paths) {
+            // (not root) || (not my car)
+            if (!lastElementIsUserCar(path, carLicensePlate) && !lastElementIsRoot(path))
+                return false
+        }
+
+        return true
+    }
+
+    private fun lastElementIsUserCar(path: java.util.ArrayList<ParkedCar>, carLicensePlate: String) =
+            path.last().licensePlate == carLicensePlate
 
     fun isInLayer(carLicensePlate: String, layer: ArrayList<ParkedCar>): Boolean {
         TODO("REDO")
@@ -86,41 +143,6 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
             return carMap
 
         }
-
-//        fun carsToCarQueue(cars: List<ParkedCar>, roots: List<String>, userCar: ParkedCar): ArrayList<ArrayList<ParkedCar>> {
-//
-//            val queue = ArrayList<ArrayList<ParkedCar>>()
-//            val _cars: ArrayList<ParkedCar> = cars.toMutableList() as ArrayList<ParkedCar>
-//
-//            var currentLayer: ArrayList<ParkedCar>
-//            var currentCarLicensePlates: List<String> = emptyList()
-//
-//            var toBeRemoved = ArrayList<ParkedCar>()
-//
-////            while (moreLayersExist(currentLayer)) {
-////                for (car in currentLayer)
-////            }
-////
-////            queue.reverse()
-//
-//            do {
-//                currentLayer = ArrayList()
-//
-//                for (car in _cars) {
-//                    if (car.licensePlate in roots || car.blocking.any{ blockedCar -> blockedCar in currentCarLicensePlates}) {
-//                        currentLayer.add(car)
-//                        toBeRemoved.add(car)
-//                    }
-//                }
-//                _cars.removeAll(toBeRemoved)
-//                queue.add(currentLayer)
-//                currentCarLicensePlates = currentLayer.map { car -> car.licensePlate }
-//
-//                toBeRemoved = ArrayList()
-//            } while (_cars.isNotEmpty())
-//
-//            return queue
-//        }
 
         private fun moreLayersExist(currentLayer: ArrayList<ParkedCar>): Boolean {
             for (car in currentLayer) {
