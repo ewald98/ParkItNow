@@ -6,21 +6,27 @@ import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.data.ParkedCar.Companion.toFirebaseFormat
 import com.ewdev.parkitnow.data.ParkedCar.Companion.toParkedCar
 import com.ewdev.parkitnow.data.User
+import com.ewdev.parkitnow.data.User.Companion.toFirebaseFormat
 import com.ewdev.parkitnow.data.User.Companion.toUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 object FirebaseService {
 
     val db = FirebaseFirestore.getInstance()
 
     suspend fun getUser(userId: String): User? {
-        return db
+        val doc = db
             .collection("users")
             .document(userId)
             .get()
             .await()
-            .toUser()
+
+        if (doc.exists())
+            return doc.toUser()
+        else
+            return null
     }
 
     suspend fun getQueue(root: String): List<ParkedCar> {
@@ -76,6 +82,27 @@ object FirebaseService {
                 .document(car.licensePlate)
                 .update(car.toFirebaseFormat())
                 .await()
+    }
+
+    suspend fun addNewUser(uid: String, phoneNo: String): Boolean {
+        try {
+            db
+                    .collection("users")
+                    .document(uid)
+                    .set(
+                            User(
+                                    uid,
+                                    phoneNo,
+                                    null,
+                                    false
+                            ).toFirebaseFormat()
+                    )
+                    .await()
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+
     }
 
 }

@@ -10,9 +10,10 @@ import com.ewdev.parkitnow.auth.FirebaseService
 import com.ewdev.parkitnow.data.User
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PhoneVerificationViewModel(application: Application, phoneNumber: String) : AndroidViewModel(application) {
+class PhoneVerificationViewModel(application: Application, val phoneNumber: String) : AndroidViewModel(application) {
 
     val smsCode: MutableLiveData<String> = MutableLiveData()
     val phoneVerified: MutableLiveData<Boolean> = MutableLiveData()
@@ -22,10 +23,15 @@ class PhoneVerificationViewModel(application: Application, phoneNumber: String) 
     private val _isParked: MutableLiveData<Boolean> = MutableLiveData()
     val isParked: LiveData<Boolean> get() = _isParked
 
-    private lateinit var user: User
+    private var user: User? = null
 
-    lateinit var codeGenerated: String
+    var codeGenerated: String = "123456"
     val context = getApplication<Application>().applicationContext
+
+    init {
+        requestAuthOptions()
+
+    }
 
     fun requestAuthOptions() {
         callbackLiveData.value = callbacks
@@ -66,10 +72,6 @@ class PhoneVerificationViewModel(application: Application, phoneNumber: String) 
         signInWithPhoneAuthCredential(credential)
 
     }
-    init {
-        requestAuthOptions()
-    }
-
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         val auth = FirebaseAuth.getInstance()
@@ -81,10 +83,20 @@ class PhoneVerificationViewModel(application: Application, phoneNumber: String) 
                     Log.d("signIn", "signInWithCredential:success")
 
                     phoneVerified.value = true
-                    viewModelScope.launch {
-                        user = FirebaseService.getUser(auth.currentUser!!.uid)!!
 
-                        _isParked.value = user.isParked
+                    viewModelScope.launch {
+                        user = FirebaseService.getUser(auth.currentUser!!.uid)
+
+                        if (user == null) {
+
+                            val addedUser = FirebaseService.addNewUser(auth.currentUser!!.uid, phoneNumber)
+                            if (addedUser)
+                                _isParked.value = false
+
+
+                        } else {
+                            _isParked.value = user!!.isParked
+                        }
                     }
 
                     val user = task.result?.user

@@ -11,17 +11,26 @@ data class User(
     val selectedCar: String?,
     @field:JvmField
     val isParked: Boolean,
-    val queue: String?
 ) : Parcelable {
 
     companion object {
+
         fun DocumentSnapshot.toUser(): User? {
             val phoneNo = getString("phoneNo")!!
             val selectedCar = getString("selectedCar")!!
             val isParked = getBoolean("isParked")!!
-            val queue = getString("queue")!!
             // document id is uid
-            return User(id, phoneNo, selectedCar, isParked, queue)
+            return User(id, phoneNo, selectedCar, isParked)
+        }
+
+        fun User.toFirebaseFormat(): HashMap<String, Any> {
+            val firebaseUser = HashMap<String, Any>()
+
+            firebaseUser.put("phoneNo", phoneNo)
+            firebaseUser.put("isParked", isParked)
+            firebaseUser.put("selectedCar", selectedCar ?: "")
+
+            return firebaseUser
         }
     }
 }

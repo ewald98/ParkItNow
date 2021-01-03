@@ -63,7 +63,7 @@ class SplashFragment : Fragment() {
         // wait for some time and display splash
         Handler(Looper.getMainLooper()).postDelayed({
             authViewModel.requestIsLoggedIn()
-        }, 2000)
+        }, 3000)
 //        navController = Navigation.findNavController(view)  // navController has a reference to the navGraph
     }
 
