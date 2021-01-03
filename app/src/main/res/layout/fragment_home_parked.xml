@@ -105,6 +105,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_departureTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -201,39 +202,69 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/button">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="fragment_home_parked" />
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="24sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:text="You are being blocked by:" />
 
                     <TextView
+                        android:id="@+id/tv_blocker_no_one"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="80dp"
-                        android:text="Blocking:" />
+                        android:layout_marginLeft="10dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/white"
+                        android:text="no one"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/blocked_tv"
-                        android:layout_width="wrap_content"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_blocker_cars_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="" />
+                        android:orientation="vertical"
+                        android:background="@drawable/white_container">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="100dp"
-                        android:text="Blocked by:" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="24sp"
+                            android:textColor="@color/black"
+                            android:fontFamily="sans-serif-light"
+                            android:text="You are currently blocking:" />
 
-                    <TextView
-                        android:id="@+id/blocker_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="" />
+                        <TextView
+                            android:id="@+id/tv_blocked_no_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="18sp"
+                            android:textColor="@color/black"
+                            android:text="no one"
+                            android:layout_marginBottom="10dp"
+                            android:visibility="gone" />
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_blocked_cars_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
         </LinearLayout>

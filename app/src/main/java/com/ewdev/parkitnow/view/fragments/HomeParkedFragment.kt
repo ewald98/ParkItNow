@@ -1,5 +1,6 @@
 package com.ewdev.parkitnow.view.fragments
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,9 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ewdev.parkitnow.R
+import com.ewdev.parkitnow.data.AddedCarsRecycleViewAdapter
+import com.ewdev.parkitnow.data.BlockedCarsRecycleViewAdapter
+import com.ewdev.parkitnow.data.BlockerCarsRecycleViewAdapter
 import com.ewdev.parkitnow.viewModel.HomeFragmentViewModel
+import com.google.api.Distribution
 import kotlinx.android.synthetic.main.fragment_home_parked.*
+import kotlinx.android.synthetic.main.fragment_park_car.*
 
 class HomeParkedFragment : Fragment() {
 
@@ -33,22 +40,52 @@ class HomeParkedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.blockedCars.observe(viewLifecycleOwner, Observer { parkedCars ->
-            var s = ""
-            parkedCars.forEach{
-                s += it.licensePlate + " " + it.relativeDepartureTime + "\n"
-            }
-            blocked_tv.text = s
+        viewModel.leaveTime.observe(viewLifecycleOwner, { time ->
+            tv_departureTime.text = time
         })
 
-        viewModel.blockerCars.observe(viewLifecycleOwner, Observer { parkedCars ->
-            var s = ""
-            parkedCars.forEach{
-                s += it.licensePlate + " " + it.relativeDepartureTime + "\n"
+        initLists()
+
+        viewModel.blockedCars.observe(viewLifecycleOwner, { cars ->
+            if (cars.isEmpty())
+                tv_blocked_no_one.visibility = View.VISIBLE
+            else {
+                tv_blocked_no_one.visibility = View.GONE
+                var listAdapter = BlockedCarsRecycleViewAdapter(
+                        cars
+                )
+                rv_blocked_cars_list.apply {
+                    layoutManager = layoutManager
+                    adapter = listAdapter
+                }
             }
-            blocker_tv.text = s
         })
 
+        viewModel.blockerCars.observe(viewLifecycleOwner, Observer { cars ->
+            if (cars.isEmpty())
+                tv_blocker_no_one.visibility = View.VISIBLE
+            else {
+                tv_blocker_no_one.visibility = View.GONE
+                var listAdapter = BlockerCarsRecycleViewAdapter(
+                        cars
+                )
+                rv_blocker_cars_list.apply {
+                    layoutManager = layoutManager
+                    adapter = listAdapter
+                }
+            }
+        })
 
     }
+
+    private fun initLists() {
+        rv_blocked_cars_list.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
+        }
+        rv_blocker_cars_list.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
+        }
+
+    }
+
 }

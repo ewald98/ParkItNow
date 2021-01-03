@@ -20,9 +20,9 @@ object Helper {
 
         if (days > 1) {
             // TODO: make this more beautiful with DateFormat
-            return "Leaving at: " + DateFormat.format("yyyy-MM-dd HH:mm:ss", departureDate)
+            return "" + DateFormat.format("HH:mm, MM-dd", departureDate)
         } else {
-            return "Leaving in: " + hours + "h " + minutes + "minutes"
+            return "" + hours + "h " + (minutes - hours * 60) + "m"
         }
 
     }

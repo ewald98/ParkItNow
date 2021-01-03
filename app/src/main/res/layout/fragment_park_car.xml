@@ -32,7 +32,7 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_blocked_cars"
+        android:id="@+id/rv_cars_added"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

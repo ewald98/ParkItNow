@@ -2,7 +2,6 @@ package com.ewdev.parkitnow.view.fragments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,23 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ewdev.parkitnow.R
-import com.ewdev.parkitnow.data.CarsRecycleViewAdapter
+import com.ewdev.parkitnow.data.AddedCarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.viewModel.ParkCarViewModel
 import kotlinx.android.synthetic.main.fragment_park_car.*
 import android.text.format.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Objects.isNull
-import kotlin.math.min
 
 class ParkCarFragment: Fragment() {
 
@@ -122,16 +116,16 @@ class ParkCarFragment: Fragment() {
     }
 
     private fun initList() {
-        rv_blocked_cars.apply {
+        rv_cars_added.apply {
             layoutManager = LinearLayoutManager(requireActivity())
         }
 
         viewModel.blockedCars.observe(viewLifecycleOwner, { cars ->
-            var listAdapter = CarsRecycleViewAdapter(
+            var listAdapter = AddedCarsRecycleViewAdapter(
                     cars,
                     { car -> viewModel.removeFromList(car) }
             )
-            rv_blocked_cars.apply {
+            rv_cars_added.apply {
                 layoutManager = layoutManager
                 adapter = listAdapter
             }

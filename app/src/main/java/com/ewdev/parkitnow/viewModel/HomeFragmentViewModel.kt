@@ -28,10 +28,12 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
     private val _isParked: MutableLiveData<Boolean> = MutableLiveData()
     private val _blockedCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
     private val _blockerCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
+    private val _leaveTime: MutableLiveData<String> = MutableLiveData()
 
     val isParked: LiveData<Boolean> get() = _isParked
     val blockedCars: LiveData<List<RelativeParkedCar>> get() = _blockedCars
     val blockerCars: LiveData<List<RelativeParkedCar>> get() = _blockerCars
+    val leaveTime: LiveData<String> get() = _leaveTime
 
     init {
         viewModelScope.launch {
@@ -40,6 +42,7 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
             _isParked.value = user.isParked
 
             val userCar = FirebaseService.getCar(user.selectedCar!!)
+            _leaveTime.value = Helper.toStringDateFormat(userCar!!.departureTime)
 
             // get car queues.
             // for each car queue get blocker/blocked
@@ -59,6 +62,10 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    fun publishCars() {
+        _blockerCars.postValue(_blockerCars.value)
+        _blockedCars.postValue(_blockedCars.value)
+    }
 
     private fun toViewFormat(blockedCars: ArrayList<ParkedCar>): List<RelativeParkedCar> {
         val now = Date()

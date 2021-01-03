@@ -62,6 +62,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.chaos.view:pinview:1.4.4'
 
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     testImplementation 'junit:junit:4.+'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
