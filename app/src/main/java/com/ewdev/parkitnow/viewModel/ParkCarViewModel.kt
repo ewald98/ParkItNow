@@ -68,6 +68,9 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
                     .map { car -> car.roots }
                     .flatten()
                     .distinct()
+                    .ifEmpty {
+                        listOf(user.selectedCar)
+                    }
 
             val blocking = _blockedCars
                     .map { car -> car.licensePlate }
@@ -75,7 +78,7 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
             FirebaseService.setCar(ParkedCar(
                     user.selectedCar!!,
                     leaveTime.value!!,
-                    roots,
+                    roots as List<String>,
                     blocking
             ))
 
