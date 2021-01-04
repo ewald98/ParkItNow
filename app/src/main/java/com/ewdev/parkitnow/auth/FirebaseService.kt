@@ -108,7 +108,7 @@ object FirebaseService {
             .await()
     }
 
-    suspend fun addNewUser(uid: String, phoneNo: String): Boolean {
+    suspend fun addNewUser(uid: String, phoneNo: String, token: String): Boolean {
         try {
             db
                     .collection("users")
@@ -118,6 +118,7 @@ object FirebaseService {
                                     uid,
                                     phoneNo,
                                     null,
+                                    token,
                                     false
                             ).toFirebaseFormat()
                     )

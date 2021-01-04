@@ -36,16 +36,20 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                                     user.uid,
                                     user.phoneNo,
                                     licensePlate,
+                                    user.token,
                                     false
                                 )
                             )
                 }
                 changesCommited.value = true
+                return@launch
             }
 
 
-            if (FirebaseService.exists(licensePlate))
+            if (FirebaseService.exists(licensePlate)) {
                 changesCommited.value = false
+                return@launch
+            }
 
             FirebaseService.deleteCar(user!!.selectedCar!!)
 
@@ -62,6 +66,7 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                     user.uid,
                     user.phoneNo,
                     licensePlate,
+                    user.token,
                     false
                 )
             )

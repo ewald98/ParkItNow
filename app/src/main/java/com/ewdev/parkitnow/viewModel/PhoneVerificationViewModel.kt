@@ -8,17 +8,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ewdev.parkitnow.auth.FirebaseService
 import com.ewdev.parkitnow.data.User
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class PhoneVerificationViewModel(application: Application, val phoneNumber: String) : AndroidViewModel(application) {
+class PhoneVerificationViewModel(application: Application, val phoneNumber: String) :
+    AndroidViewModel(application) {
 
     val smsCode: MutableLiveData<String> = MutableLiveData()
     val phoneVerified: MutableLiveData<Boolean> = MutableLiveData()
 
-    val callbackLiveData: MutableLiveData<PhoneAuthProvider.OnVerificationStateChangedCallbacks> = MutableLiveData()
+    val callbackLiveData: MutableLiveData<PhoneAuthProvider.OnVerificationStateChangedCallbacks> =
+        MutableLiveData()
 
     private val _isParked: MutableLiveData<Boolean> = MutableLiveData()
     val isParked: LiveData<Boolean> get() = _isParked
@@ -42,7 +47,7 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
     }
 
 
-    private val callbacks = object: PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+    private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
             super.onCodeSent(p0, p1)
@@ -89,10 +94,20 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
 
                         if (user == null) {
 
-                            val addedUser = FirebaseService.addNewUser(auth.currentUser!!.uid, phoneNumber)
+                            val token = FirebaseMessaging.getInstance().token.await()
+
+                            val addedUser = FirebaseService.addNewUser(
+                                auth.currentUser!!.uid,
+                                phoneNumber,
+                                token!!
+                            )
                             if (addedUser)
                                 _isParked.value = false
 
+
+                            // Log and toast
+//                                    val msg = getString(R.string.msg_token_fmt, token)
+//                                    Log.d(TAG, msg)
 
                         } else {
                             _isParked.value = user!!.isParked
