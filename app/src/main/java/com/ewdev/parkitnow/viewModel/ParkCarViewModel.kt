@@ -5,12 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ewdev.parkitnow.auth.FirebaseService
-import com.ewdev.parkitnow.data.DayTime
 import com.ewdev.parkitnow.data.ParkedCar
-import com.ewdev.parkitnow.data.RelativeParkedCar
 import com.ewdev.parkitnow.data.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -75,7 +72,7 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
             val blocking = _blockedCars
                     .map { car -> car.licensePlate }
 
-            FirebaseService.setCar(ParkedCar(
+            FirebaseService.updateCar(ParkedCar(
                     user.selectedCar!!,
                     leaveTime.value!!,
                     roots as List<String>,

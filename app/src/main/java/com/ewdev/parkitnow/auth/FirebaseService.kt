@@ -53,7 +53,7 @@ object FirebaseService {
                 .map { doc -> doc.toParkedCar() }
     }
 
-    suspend fun isValidCar(licensePlate: String): Boolean {
+    suspend fun exists(licensePlate: String): Boolean {
         return db
             .collection("cars")
             .document(licensePlate)
@@ -76,12 +76,36 @@ object FirebaseService {
 
     }
 
-    suspend fun setCar(car: ParkedCar) {
+    suspend fun updateCar(car: ParkedCar) {
         db
                 .collection("cars")
                 .document(car.licensePlate)
                 .update(car.toFirebaseFormat())
                 .await()
+    }
+
+    suspend fun setCar(car: ParkedCar) {
+        db
+            .collection("cars")
+            .document(car.licensePlate)
+            .set(car.toFirebaseFormat())
+            .await()
+    }
+
+    suspend fun deleteCar(licensePlate: String) {
+        db
+            .collection("cars")
+            .document(licensePlate)
+            .delete()
+            .await()
+    }
+
+    suspend fun updateUser(updatedUser: User) {
+        db
+            .collection("users")
+            .document(updatedUser.uid)
+            .update(updatedUser.toFirebaseFormat())
+            .await()
     }
 
     suspend fun addNewUser(uid: String, phoneNo: String): Boolean {

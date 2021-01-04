@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:orientation="vertical">
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
@@ -17,13 +22,12 @@ android:orientation="vertical">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topAppBar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:title="Home"
                     app:menu="@menu/top_app_bar"
                     app:navigationIcon="@drawable/ic_menu_24px"
-                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                    />
+                    app:title="Home" />
 
                 <!--        <androidx.core.widget.NestedScrollView-->
                 <!--            android:layout_width="match_parent"-->
@@ -36,52 +40,48 @@ android:orientation="vertical">
 
             </com.google.android.material.appbar.AppBarLayout>
 
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="100"
-            android:orientation="vertical"
             android:background="@drawable/home_background"
             android:gravity="center_horizontal"
-            >
+            android:orientation="vertical"
+            android:weightSum="100">
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="15"
-                />
+                android:layout_weight="15" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="12"
                 android:text="Hello, "
                 android:textColor="@color/white"
-                android:textSize="30sp"
-                android:layout_gravity="center_horizontal"
-                />
+                android:textSize="30sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="10"
-
                 android:layout_gravity="center_horizontal"
+
+                android:layout_marginBottom="20dp"
+                android:layout_weight="10"
                 android:text="Here are your stats:"
-                android:textColor="@color/white"
-                android:layout_marginBottom="20dp"/>
+                android:textColor="@color/white" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:orientation="vertical"
                 android:layout_weight="50"
-                android:padding="14dp"
-                android:background="@drawable/rectangle" >
+                android:background="@drawable/rectangle"
+                android:orientation="vertical"
+                android:padding="14dp">
 
                 <TextView
                     android:id="@+id/textView3"
@@ -165,8 +165,7 @@ android:orientation="vertical">
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
-                        android:drawableLeft="@drawable/ic_arrow_4"
-                        />
+                        android:drawableLeft="@drawable/ic_arrow_4" />
 
                     <Space
                         android:layout_width="0dp"
@@ -177,8 +176,7 @@ android:orientation="vertical">
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
-                        android:drawableRight="@drawable/ic_arrow_right"
-                        />
+                        android:drawableRight="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -190,27 +188,27 @@ android:orientation="vertical">
             android:id="@+id/park_car_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/park_car_button"
+            android:backgroundTint="@color/white"
+            android:drawableRight="@drawable/ic_local_parking_24px"
+            android:fontFamily="sans-serif-light"
+            android:gravity="left|center_vertical"
+            android:letterSpacing="0.03"
             android:paddingLeft="30dp"
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
-            app:cornerRadius="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:text="Park car"
-            android:textSize="20sp"
-            android:textAllCaps="false"
-            android:textStyle="normal"
-            android:fontFamily="sans-serif-light"
-            android:letterSpacing="0.03"
-            android:layout_marginBottom="30dp"
             android:shadowColor="@color/black"
+            android:text="Park car"
 
-            android:backgroundTint="@color/white"
-            android:background="@drawable/park_car_button"
+            android:textAllCaps="false"
+            android:textSize="20sp"
 
-            android:gravity="left|center_vertical"
-            android:drawableRight="@drawable/ic_local_parking_24px" />
+            android:textStyle="normal"
+            app:cornerRadius="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -224,4 +222,14 @@ android:orientation="vertical">
 
         </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_menu" />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
