@@ -13,6 +13,7 @@ import com.ewdev.parkitnow.data.RelativeParkedCar
 import com.ewdev.parkitnow.data.User
 import com.ewdev.parkitnow.utils.Helper
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -24,6 +25,7 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
 //    private val dbRepository: DbRepository = DbRepository()
 
     private lateinit var user: User
+    private lateinit var userCar: ParkedCar
 
     private val _isParked: MutableLiveData<Boolean> = MutableLiveData()
     private val _blockedCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
@@ -41,7 +43,7 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
 
             _isParked.value = user.isParked
 
-            val userCar = FirebaseService.getCar(user.selectedCar!!)
+            userCar = FirebaseService.getCar(user.selectedCar!!)!!
             _leaveTime.value = Helper.toStringDateFormat(userCar!!.departureTime)
 
             // get car queues.
@@ -68,8 +70,6 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun toViewFormat(blockedCars: ArrayList<ParkedCar>): List<RelativeParkedCar> {
-        val now = Date()
-
         blockedCars
                 .sortWith(compareByDescending { car -> car.departureTime })
 
@@ -83,6 +83,23 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
         } as ArrayList<RelativeParkedCar>
 
         return blockedCars2
+    }
+
+    fun leaveNow() {
+
+        viewModelScope.launch {
+            FirebaseService.updateCar(
+                ParkedCar(
+                    userCar.licensePlate,
+                    Calendar.getInstance(),
+                    userCar.roots,
+                    userCar.blocking
+                )
+            )
+        }
+
+
+
     }
 
 }

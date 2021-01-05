@@ -76,6 +76,10 @@ class HomeParkedFragment : Fragment() {
             }
         })
 
+        leave_now_button.setOnClickListener {
+            viewModel.leaveNow()
+        }
+
     }
 
     private fun initLists() {

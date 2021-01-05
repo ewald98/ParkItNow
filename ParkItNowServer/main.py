@@ -26,6 +26,18 @@ default_app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 
+def send_notifications(title, body, tokens):
+    message = messaging.MulticastMessage(
+        notification=messaging.Notification(
+            title=title,
+            body=body
+        ),
+        tokens=tokens
+    )
+    response = messaging.send_multicast(message)
+    print('{0} messages were sent successfully'.format(response.success_count))
+
+
 def send_notification(title, body, token):
     message = messaging.Message(
         notification=messaging.Notification(
@@ -150,13 +162,19 @@ def get_blockers_of(car_id_changed):
 
 
 def notify_blockers(blockers, car_id_changed):
+    tokens = []
     for blocker in blockers:
         print("BLOCKER:", blocker)
         doc = db.collection(u"users").where(u'selectedCar', u'==', blocker).get()
         if len(doc) > 0:
-            send_notification("ParkItNow",
-                              car_id_changed + " is leaving NOW!",
-                              doc[0]._data['token'])
+            # send_notification("ParkItNow",
+            #                   car_id_changed + " is leaving NOW!",
+            #                   doc[0]._data['token'])
+            tokens.append(doc[0]._data['token'])
+
+    send_notifications("ParkItNow",
+                       car_id_changed + " is leaving NOW!",
+                       tokens)
 
 
 def on_snapshot(doc_snapshot, changes, read_time):
@@ -181,27 +199,28 @@ def on_snapshot(doc_snapshot, changes, read_time):
                 # either somebody parked, or somebody changed the time when he leaves, ~or somebody left~(cut this one
                 # out cause we just leave the old data in there)
                 #
-                # other potential cases: has_to_park/user_left_notificator was switched.
+                # other potential cases: leaveable/blocked_user_left_announcer was switched.
                 #
-                # in case of time being
-                # I'll need some flags (synchronous) in order to tackle the case when time is changed and it's gonna be
-                # treated in the while loop too
+                # I don't know if the following is relevant anymore:
+                #  I'll need some flags (synchronous) in order to tackle the case when time is changed and it's gonna be
+                #  treated in the while loop too
+                #
                 if change.document.id not in cars:
                     # somebody just added a new car
                     cars.update({change.document.id, change.document._data})
                 else:
-                    pass
-                    # sb changed the time when he leaves
-
-                    # sb leaves now
+                    # sb changed the time when he leaves:
                     leave_time: DatetimeWithNanoseconds = change.document._data['departureTime']
-                    if abs(leave_time - DatetimeWithNanoseconds.now(tz=datetime.timezone.utc)) < datetime.timedelta(
-                            minutes=1):
-                        blockers = get_blockers_of(change.document.id)
-                        notify_blockers(blockers, change.document.id)
-
-                    # sb leaves later
-                    # sb leaves sooner
+                    if abs(cars[change.document.id]['departureTime'] - leave_time) > datetime.timedelta(seconds=1):
+                        # 1) sb leaves now
+                        now = DatetimeWithNanoseconds.now(tz=datetime.timezone.utc)
+                        if abs(leave_time - now) < datetime.timedelta(minutes=1):
+                            blockers = get_blockers_of(change.document.id)
+                            notify_blockers(blockers, change.document.id)
+                        # 2) sb leaves later
+                        #   don't care
+                        # 3) sb leaves sooner
+                        #   don't care
 
     callback_done.set()
 

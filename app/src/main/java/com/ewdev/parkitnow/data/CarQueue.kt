@@ -33,6 +33,8 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
             blockedCars.addAll(currentBlocking)
         }
 
+        if (blockedCars.isEmpty())
+            return arrayListOf()
         return blockedCars.distinct() as ArrayList<ParkedCar>
 
     }
@@ -90,13 +92,23 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
         val blockedCars = path.last().blocking
 
         for (j in 0 until blockedCars.size) {
-            val newPath = ArrayList<ParkedCar>()
-            newPath.addAll(path)
-            newPath.add(carQueue[blockedCars[j]]!!)
-            newPaths.add(newPath)
+            if (carQueue.containsKey(blockedCars[j])) {
+                val newPath = ArrayList<ParkedCar>()
+                newPath.addAll(path)
+                newPath.add(carQueue[blockedCars[j]]!!)
+                newPaths.add(newPath)
+            }
         }
 
         return newPaths
+    }
+
+    private fun carContainsAnyRoot(carLicensePlate: String, roots: List<String>): Boolean {
+        for (root in carQueue[carLicensePlate]!!.roots) {
+            if (root in roots)
+                return true
+        }
+        return false
     }
 
     private fun lastElementIsRoot(path: ArrayList<ParkedCar>) =
