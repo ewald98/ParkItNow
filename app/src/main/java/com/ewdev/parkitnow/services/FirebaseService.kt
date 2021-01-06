@@ -55,7 +55,7 @@ object FirebaseService {
     More efficient than getQueue (doesn't require requesting two separate queues which may contain
     the same element)
      */
-    suspend fun getQueues(roots: List<String>): List<ParkedCar> {
+    suspend fun getCars(roots: List<String>): List<ParkedCar> {
         return db
                 .collection("cars")
                 .whereArrayContainsAny("roots", roots)
@@ -131,6 +131,8 @@ object FirebaseService {
                                     phoneNo,
                                     null,
                                     token,
+                                    false,
+                                    false,
                                     false
                             ).toFirebaseFormat()
                     )

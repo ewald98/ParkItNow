@@ -275,9 +275,9 @@ while True:
             user_doc = db.collection(u"users").where(u'selectedCar', u'==', car_id).get()[0]
             docs = get_user_docs((blockers))
             # update to leaving and to leave_announcer
-            user_doc.reference.update({u'leaving': True})
+            user_doc.reference.update({u'leaver': True})
             for doc in docs:
-                doc.reference.update({u'leave_announcer': True})
+                doc.reference.update({u'leaveAnnouncer': True})
 
             tokens = get_tokens(docs)
             send_notifications("ParkItNow Alert",

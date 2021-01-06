@@ -36,7 +36,9 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                                     user.phoneNo,
                                     licensePlate,
                                     user.token,
-                                    false
+                                    false,
+                                    user.leaveAnnouncer,
+                                    user.leaver
                                 )
                             )
                 }
@@ -66,7 +68,9 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                     user.phoneNo,
                     licensePlate,
                     user.token,
-                    false
+                    false,
+                    user.leaveAnnouncer,
+                    user.leaver
                 )
             )
             changesCommited.value = true

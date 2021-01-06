@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ScrollView
@@ -14,27 +14,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
-                    app:liftOnScroll="true"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:liftOnScroll="true">
 
                     <com.google.android.material.appbar.MaterialToolbar
                         android:id="@+id/topAppBar"
+                        style="@style/Widget.MaterialComponents.Toolbar.Primary"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:title="Home"
                         app:menu="@menu/top_app_bar"
                         app:navigationIcon="@drawable/ic_menu_24px"
-                        style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                        />
+                        app:title="Home" />
 
                     <!--        <androidx.core.widget.NestedScrollView-->
                     <!--            android:layout_width="match_parent"-->
@@ -54,46 +52,42 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="100"
-                android:orientation="vertical"
                 android:background="@drawable/home_background"
                 android:gravity="center_horizontal"
-                >
+                android:orientation="vertical"
+                android:weightSum="100">
 
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="15"
-                    />
+                    android:layout_weight="15" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="12"
                     android:text="Hello, "
                     android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:layout_gravity="center_horizontal"
-                    />
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="10"
-
                     android:layout_gravity="center_horizontal"
+
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="10"
                     android:text="We have some information for you:"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="20dp"/>
+                    android:textColor="@color/white" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:orientation="vertical"
                     android:layout_weight="50"
-                    android:padding="14dp"
                     android:background="@drawable/rectangle"
-                    >
+                    android:orientation="vertical"
+                    android:padding="14dp">
 
                     <TextView
                         android:id="@+id/tv_departureTime_prefix"
@@ -132,8 +126,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="4"
-                            android:drawableLeft="@drawable/ic_arrow_4"
-                            />
+                            android:drawableLeft="@drawable/ic_arrow_4" />
 
                         <Space
                             android:layout_width="0dp"
@@ -144,8 +137,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="4"
-                            android:drawableRight="@drawable/ic_arrow_right"
-                            />
+                            android:drawableRight="@drawable/ic_arrow_right" />
 
                     </LinearLayout>
 
@@ -153,120 +145,163 @@
 
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/leave_now_button"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingTop="18dp"
-                android:paddingBottom="18dp"
-                app:cornerRadius="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="Leave now"
-                android:textSize="20sp"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                android:fontFamily="sans-serif-light"
-                android:letterSpacing="0.03"
-                android:shadowColor="@color/black"
+                android:orientation="vertical"
+                android:padding="30dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/leave_now_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:drawableRight="@drawable/ic_priority_high_32px"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="left|center_vertical"
+                    android:letterSpacing="0.03"
+                    android:paddingLeft="30dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp"
+                    android:shadowColor="@color/black"
+                    android:text="Leave now"
+                    android:textAllCaps="false"
+
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    app:cornerRadius="10dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/change_leave_time_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:drawableRight="@drawable/ic_update_32px"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="left|center_vertical"
+                    android:letterSpacing="0.03"
+                    android:paddingLeft="30dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp"
+                    android:shadowColor="@color/black"
+                    android:text="Change leave time"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+
+                    android:textStyle="normal"
+                    app:cornerRadius="10dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/i_left_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:drawableRight="@drawable/ic_priority_high_32px"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="left|center_vertical"
+                    android:letterSpacing="0.03"
+                    android:paddingLeft="30dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp"
+                    android:shadowColor="@color/black"
+                    android:text="I left"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+
+                    android:textStyle="normal"
+                    android:visibility="gone"
+                    app:cornerRadius="10dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/leaver_left_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:drawableRight="@drawable/ic_priority_high_32px"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="left|center_vertical"
+                    android:letterSpacing="0.03"
+                    android:paddingLeft="30dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp"
+                    android:shadowColor="@color/black"
+                    android:text="Leaver left"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+
+                    android:textStyle="normal"
+                    android:visibility="gone"
+                    app:cornerRadius="10dp" />
 
 
-                android:gravity="left|center_vertical"
-                android:backgroundTint="@color/red"
-                android:drawableRight="@drawable/ic_priority_high_32px"
-                />
+            </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/change_leave_time_button"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingTop="18dp"
-                android:paddingBottom="18dp"
-                app:cornerRadius="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="Change leave time"
-                android:textSize="20sp"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                android:fontFamily="sans-serif-light"
-                android:letterSpacing="0.03"
-                android:layout_marginBottom="30dp"
-                android:shadowColor="@color/black"
+                android:background="@drawable/button"
+                android:orientation="vertical">
 
-                android:gravity="left|center_vertical"
-                android:drawableRight="@drawable/ic_update_32px" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="You are being blocked by:"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tv_blocker_no_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="no one"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_blocker_cars_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@drawable/button">
+                    android:background="@drawable/white_container"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="24sp"
-                        android:textColor="@color/white"
                         android:fontFamily="sans-serif-light"
-                        android:text="You are being blocked by:" />
+                        android:text="You are currently blocking:"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/tv_blocker_no_one"
+                        android:id="@+id/tv_blocked_no_one"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/white"
-                        android:text="no one"
                         android:layout_marginBottom="10dp"
+                        android:text="no one"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_blocker_cars_list"
+                        android:id="@+id/rv_blocked_cars_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/white_container">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="24sp"
-                            android:textColor="@color/black"
-                            android:fontFamily="sans-serif-light"
-                            android:text="You are currently blocking:" />
-
-                        <TextView
-                            android:id="@+id/tv_blocked_no_one"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"
-                            android:text="no one"
-                            android:layout_marginBottom="10dp"
-                            android:visibility="gone" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_blocked_cars_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
