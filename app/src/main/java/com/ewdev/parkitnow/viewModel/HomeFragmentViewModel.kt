@@ -6,14 +6,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.ewdev.parkitnow.auth.FirebaseService
+import com.ewdev.parkitnow.services.FirebaseService
 import com.ewdev.parkitnow.data.CarQueue
 import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.data.RelativeParkedCar
 import com.ewdev.parkitnow.data.User
 import com.ewdev.parkitnow.utils.Helper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,11 +30,13 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
     private val _blockedCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
     private val _blockerCars: MutableLiveData<List<RelativeParkedCar>> = MutableLiveData()
     private val _leaveTime: MutableLiveData<String> = MutableLiveData()
+    private val _phoneNo: MutableLiveData<String> = MutableLiveData()
 
     val isParked: LiveData<Boolean> get() = _isParked
     val blockedCars: LiveData<List<RelativeParkedCar>> get() = _blockedCars
     val blockerCars: LiveData<List<RelativeParkedCar>> get() = _blockerCars
     val leaveTime: LiveData<String> get() = _leaveTime
+    val phoneNo: LiveData<String> get() = _phoneNo
 
     init {
         viewModelScope.launch {
@@ -100,6 +101,15 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
 
 
 
+    }
+
+    fun getUserPhoneNumber(licensePlate: String) {
+        viewModelScope.launch {
+            val user = FirebaseService.getUserBySelectedCar(licensePlate)
+            if (user != null) {
+                _phoneNo.value = user.phoneNo
+            }
+        }
     }
 
 }

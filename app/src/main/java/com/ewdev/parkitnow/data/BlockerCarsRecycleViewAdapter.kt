@@ -8,7 +8,8 @@ import com.ewdev.parkitnow.R
 import kotlinx.android.synthetic.main.item_blocker_car.view.*
 
 class BlockerCarsRecycleViewAdapter(
-    private val parkedCars: List<RelativeParkedCar>
+    private val parkedCars: List<RelativeParkedCar>,
+    private val callUser: (String) -> (Unit)
 ): RecyclerView.Adapter<BlockerCarsRecycleViewAdapter.CarViewHolder>() {
 
     inner class CarViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -16,6 +17,9 @@ class BlockerCarsRecycleViewAdapter(
         fun bind(car: RelativeParkedCar) {
             itemView.tv_license_plate.text = car.licensePlate
             itemView.tv_leave_time.text = car.relativeDepartureTime
+            itemView.call.setOnClickListener {
+                callUser(car.licensePlate)
+            }
         }
 
     }

@@ -6,13 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.ewdev.parkitnow.auth.FirebaseService
+import com.ewdev.parkitnow.services.FirebaseService
 import com.ewdev.parkitnow.data.User
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 

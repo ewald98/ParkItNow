@@ -1,7 +1,5 @@
-package com.ewdev.parkitnow.auth
+package com.ewdev.parkitnow.services
 
-import android.util.Log
-import com.ewdev.parkitnow.data.CarQueue
 import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.data.ParkedCar.Companion.toFirebaseFormat
 import com.ewdev.parkitnow.data.ParkedCar.Companion.toParkedCar
@@ -27,6 +25,20 @@ object FirebaseService {
             return doc.toUser()
         else
             return null
+    }
+
+    suspend fun getUserBySelectedCar(licensePlate: String): User? {
+        val docs = db
+            .collection("users")
+            .whereEqualTo("selectedCar", licensePlate)
+            .get()
+            .await()
+            .documents
+
+        if (docs.size != 1)
+            return null
+        else
+            return docs[0].toUser()
     }
 
     suspend fun getQueue(root: String): List<ParkedCar> {

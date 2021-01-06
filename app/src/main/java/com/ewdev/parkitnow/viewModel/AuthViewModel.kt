@@ -5,12 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ewdev.parkitnow.auth.AuthRepository
-import com.ewdev.parkitnow.auth.FirebaseService
+import com.ewdev.parkitnow.services.FirebaseService
 import com.ewdev.parkitnow.data.User
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {

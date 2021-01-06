@@ -1,5 +1,6 @@
 package com.ewdev.parkitnow.data
 
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ class BlockedCarsRecycleViewAdapter(
         fun bind(car: RelativeParkedCar) {
             itemView.tv_license_plate.text = car.licensePlate
             itemView.tv_leave_time.text = car.relativeDepartureTime
+            if (car.relativeDepartureTime[1] == 'm' || car.relativeDepartureTime[2] == 'm')
+                itemView.leaving_soon_warning_icon.visibility = View.VISIBLE
         }
 
     }

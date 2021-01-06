@@ -22,7 +22,10 @@ object Helper {
             // TODO: make this more beautiful with DateFormat
             return "" + DateFormat.format("HH:mm, MM-dd", departureDate)
         } else {
-            return "" + hours + "h " + (minutes - hours * 60) + "m"
+            if (hours.toInt() == 0)
+                return "" + minutes + "m"
+            else
+                return "" + hours + "h " + (minutes - hours * 60) + "m"
         }
 
     }

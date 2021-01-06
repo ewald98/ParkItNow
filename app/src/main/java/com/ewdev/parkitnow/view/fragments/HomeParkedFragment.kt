@@ -1,6 +1,7 @@
 package com.ewdev.parkitnow.view.fragments
 
-import android.opengl.Visibility
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,13 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ewdev.parkitnow.R
-import com.ewdev.parkitnow.data.AddedCarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.BlockedCarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.BlockerCarsRecycleViewAdapter
 import com.ewdev.parkitnow.viewModel.HomeFragmentViewModel
-import com.google.api.Distribution
 import kotlinx.android.synthetic.main.fragment_home_parked.*
-import kotlinx.android.synthetic.main.fragment_park_car.*
 
 class HomeParkedFragment : Fragment() {
 
@@ -67,7 +65,8 @@ class HomeParkedFragment : Fragment() {
             else {
                 tv_blocker_no_one.visibility = View.GONE
                 var listAdapter = BlockerCarsRecycleViewAdapter(
-                        cars
+                    cars,
+                    { licensePlate -> callUser(licensePlate) }
                 )
                 rv_blocker_cars_list.apply {
                     layoutManager = layoutManager
@@ -90,6 +89,14 @@ class HomeParkedFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireActivity())
         }
 
+    }
+
+    private fun callUser(licensePlate: String) {
+        viewModel.getUserPhoneNumber(licensePlate)
+        viewModel.phoneNo.observe(viewLifecycleOwner, { phoneNo ->
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNo))
+            startActivity(intent)
+        })
     }
 
 }
