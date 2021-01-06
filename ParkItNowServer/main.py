@@ -1,8 +1,6 @@
 import threading
 import time
 
-import pyrebase
-
 import firebase_admin
 from firebase_admin import messaging
 from firebase_admin import credentials
@@ -38,6 +36,23 @@ def send_notifications(title, body, tokens):
     print('{0} messages were sent successfully'.format(response.success_count))
 
 
+def get_user_docs(car_ids):
+    docs = []
+    for car_id in car_ids:
+        doc = db.collection(u"users").where(u'selectedCar', u'==', car_id).get()
+        if len(doc) > 0:
+            docs.append(doc[0])
+    return docs
+
+
+def get_tokens(docs):
+    tokens = []
+    for doc in docs:
+        tokens.append(doc._data['token'])
+
+    return tokens
+
+
 def send_notification(title, body, token):
     message = messaging.Message(
         notification=messaging.Notification(
@@ -48,13 +63,11 @@ def send_notification(title, body, token):
     )
     response = messaging.send(message)
     print("Successfully sent message:", response)
+    # for debugging:
+    # send_notification("Hello",
+    #                   "Python salutes you",
+    #                   "ecKGGi8rTJeorv1uXAyowp:APA91bECrBQyfgs9QyeqWUiohtDY1wDhiK8LuxGFatokUZITscvK7QDPZTPBSbRpbluXeRtNXL3LgvxffPV2J6HFt1Agkv8wpi1Vq7eEwVsoS9JCISVZ96yBtWnXJW_Dn6RGrr5B17jQ")
 
-
-# users_ref = db.collection(u'users')
-# docs = users_ref.stream()
-#
-# for doc in docs:
-#     print(f'{doc.id} => {doc.to_dict()}')
 
 callback_done = threading.Event()
 
@@ -209,6 +222,8 @@ def on_snapshot(doc_snapshot, changes, read_time):
                     # somebody just added a new car
                     cars.update({change.document.id, change.document._data})
                 else:
+                    # TODO: sb entered a new queue:
+
                     # sb changed the time when he leaves:
                     leave_time: DatetimeWithNanoseconds = change.document._data['departureTime']
                     if abs(cars[change.document.id]['departureTime'] - leave_time) > datetime.timedelta(seconds=1):
@@ -229,10 +244,42 @@ cars_ref = db.collection(u'cars')
 
 cars_ref.on_snapshot(on_snapshot)
 
+notified_flag = {}
+
+
 while True:
     # continuously check how much time is left until car leaves
-    pass
+    now = DatetimeWithNanoseconds.now(tz=datetime.timezone.utc)
+    for car_id, data in cars.items():
+        # TODO This is not perfect. They way I should do this is without the 9 50 part. But then I'd have to create a
+        #   new variable or something into firebase. So that when the user hits "leave now" he wouldn't also get this
+        #   notification
+        if (datetime.timedelta(minutes=9, seconds=50) < data['departureTime'] - now < datetime.timedelta(minutes=10) and
+                not notified_flag.get((car_id, "10"), False)):
+            print("10 minutes until " + car_id + " should leave")
+            notified_flag.update({(car_id, "10"): True})
 
-# send_notification("Hello",
-#                   "Python salutes you",
-#                   "ecKGGi8rTJeorv1uXAyowp:APA91bECrBQyfgs9QyeqWUiohtDY1wDhiK8LuxGFatokUZITscvK7QDPZTPBSbRpbluXeRtNXL3LgvxffPV2J6HFt1Agkv8wpi1Vq7eEwVsoS9JCISVZ96yBtWnXJW_Dn6RGrr5B17jQ")
+            user_doc = db.collection(u"users").where(u'selectedCar', u'==', car_id).get()[0]
+
+            send_notification("ParkItNow Reminder",
+                              "You are leaving in 10 minutes. You now have 5 minutes to change the time.",
+                              user_doc._data['token'])
+
+        if (datetime.timedelta(minutes=8, seconds=50) < data['departureTime'] - now < datetime.timedelta(minutes=9) and
+                not notified_flag.get((car_id, "5"), False) and
+                notified_flag.get((car_id, "10"), False)):  # last condition is unnecessary
+            print("5 minutes until " + car_id + " should leave")
+            notified_flag.update({(car_id, "5"): True})
+
+            blockers = get_blockers_of(car_id)
+            user_doc = db.collection(u"users").where(u'selectedCar', u'==', car_id).get()[0]
+            docs = get_user_docs((blockers))
+            # update to leaving and to leave_announcer
+            user_doc.reference.update({u'leaving': True})
+            for doc in docs:
+                doc.reference.update({u'leave_announcer': True})
+
+            tokens = get_tokens(docs)
+            send_notifications("ParkItNow Alert",
+                               car_id + " is leaving in 5 minutes!",
+                               tokens=tokens)
