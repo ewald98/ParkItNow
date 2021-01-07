@@ -57,14 +57,14 @@ class PhoneVerificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        phoneVerificationViewModel.smsCode.observe(viewLifecycleOwner, Observer { code ->
+        phoneVerificationViewModel.smsCode.observe(viewLifecycleOwner, { code ->
             pin_view.setText(code)
 
         })
 
-        phoneVerificationViewModel.phoneVerified.observe(viewLifecycleOwner, Observer { signedIn ->
+        phoneVerificationViewModel.phoneVerified.observe(viewLifecycleOwner, { signedIn ->
             if (signedIn) {
-                phoneVerificationViewModel.isParked.observe(viewLifecycleOwner, Observer { isParked ->
+                phoneVerificationViewModel.isParked.observe(viewLifecycleOwner, { isParked ->
                     if (isParked) {
                         val action = PhoneVerificationFragmentDirections.actionPhoneVerificationFragmentToHomeParkedFragment()
                         findNavController().navigate(action)
@@ -80,7 +80,7 @@ class PhoneVerificationFragment : Fragment() {
             }
         })
 
-        phoneVerificationViewModel.callbackLiveData.observe(viewLifecycleOwner, Observer { callback ->
+        phoneVerificationViewModel.callbackLiveData.observe(viewLifecycleOwner, { callback ->
 
             phoneVerificationViewModel.sendVerificationCode(
                 PhoneAuthOptions.newBuilder()

@@ -20,16 +20,25 @@ class HomeUnparkedFragmentViewModel(application: Application): AndroidViewModel(
     private lateinit var userCar: ParkedCar
 
     private val _userCarLicensePlate: MutableLiveData<String> = MutableLiveData()
+    private val _refreshFragment: MutableLiveData<Unit> = MutableLiveData()
 
     val userCarLicensePlate: LiveData<String> get() = _userCarLicensePlate
+    val refreshFragment: MutableLiveData<Unit> get() = _refreshFragment
 
     init {
         viewModelScope.launch {
             user = FirebaseService.getUser(firebaseUser!!.uid)!!
 
-            userCar = FirebaseService.getCar(user.selectedCar!!)!!
-            _userCarLicensePlate.value = userCar.licensePlate
+            if (user.selectedCar == "")
+                _userCarLicensePlate.value = "please set your car"
+            else {
+                userCar = FirebaseService.getCar(user.selectedCar!!)!!
+                _userCarLicensePlate.value = userCar.licensePlate
+            }
         }
     }
 
+    fun refreshFragment() {
+        _refreshFragment.postValue(Unit)
+    }
 }

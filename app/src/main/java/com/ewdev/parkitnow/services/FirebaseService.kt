@@ -129,7 +129,7 @@ object FirebaseService {
                             User(
                                     uid,
                                     phoneNo,
-                                    null,
+                                    "",
                                     token,
                                     false,
                                     false,

@@ -232,7 +232,8 @@ def on_snapshot(doc_snapshot, changes, read_time):
                     elif abs(old_leave_time - leave_time) > datetime.timedelta(seconds=1):
                         now = DatetimeWithNanoseconds.now(tz=datetime.timezone.utc)
                         # 1) sb leaves now
-                        if abs(leave_time - now) < datetime.timedelta(minutes=1):
+                        if abs(leave_time - now) < datetime.timedelta(minutes=2):
+                            print("got here")
                             blockers = get_blockers_of(change.document.id)
                             notify_blockers(blockers, change.document.id)
 

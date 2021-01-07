@@ -264,6 +264,7 @@
                     android:textSize="18sp"
                     android:visibility="gone" />
 
+<!--                TODO: no scrolling-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_blocker_cars_list"
                     android:layout_width="match_parent"

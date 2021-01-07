@@ -68,8 +68,6 @@ class HomeParkedFragmentViewModel(application: Application) : AndroidViewModel(a
             _blockerCars.value = toViewFormat(rawBlockerCars)
 
 
-            // TODO : DON'T FORGET ABOUT DISCARDING LEAVER LEAVEANOUUNCER AFTER "I LEFT"
-            //  _isParked.value = user.isParked
             if (user.leaver) {
                 // TODO: LATER allow leaver to change his mind (add another button for "stay longer")
                 // inflate leaver buttons
@@ -81,7 +79,7 @@ class HomeParkedFragmentViewModel(application: Application) : AndroidViewModel(a
                 val leaverCars = rawBlockedCars.filter { car ->
                     abs(car.departureTime.time.time - Date().time) / 1000 <= 300
                 }
-                // TODO: LATER, for the moment there can only be one leaverCar
+                // TODO: LATER, for the moment there can only be one leaverCar at an instance
                 _carLeavingLicensePlate.value = leaverCars[0].licensePlate
                 _carState.value = CarState.LEAVE_ANNOUNCER
             } else {

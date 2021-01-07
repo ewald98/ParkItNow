@@ -91,6 +91,9 @@
         <action
             android:id="@+id/action_homeUnparkedFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeUnparkedFragment_self"
+            app:destination="@id/homeUnparkedFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCarFragment"

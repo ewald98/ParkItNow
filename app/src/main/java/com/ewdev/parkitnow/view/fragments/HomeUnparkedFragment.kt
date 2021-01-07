@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ewdev.parkitnow.R
 import com.ewdev.parkitnow.viewModel.HomeUnparkedFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_home_parked.*
 import kotlinx.android.synthetic.main.fragment_home_unparked.*
 import kotlinx.android.synthetic.main.fragment_home_unparked.topAppBar
 
@@ -32,6 +31,20 @@ class HomeUnparkedFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.refresh -> {
+                    viewModel.refreshFragment()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        viewModel.refreshFragment.observe(viewLifecycleOwner, {
+            findNavController().navigate(R.id.action_homeUnparkedFragment_self)
+        })
 
         nav_view.setNavigationItemSelectedListener() { menuItem ->
             if (menuItem.itemId == R.id.nav_settings) {
