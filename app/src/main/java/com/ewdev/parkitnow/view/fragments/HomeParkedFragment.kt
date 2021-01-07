@@ -15,18 +15,18 @@ import com.ewdev.parkitnow.R
 import com.ewdev.parkitnow.data.BlockedCarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.BlockerCarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.CarState
-import com.ewdev.parkitnow.viewModel.HomeFragmentViewModel
+import com.ewdev.parkitnow.viewModel.HomeParkedFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_home_parked.*
 
 class HomeParkedFragment : Fragment() {
 
-    lateinit var viewModel: HomeFragmentViewModel
+    lateinit var viewModel: HomeParkedFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
-        viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
-
+        viewModel = ViewModelProvider(this).get(HomeParkedFragmentViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -34,11 +34,26 @@ class HomeParkedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        viewModel.isParked.observe(viewLifecycleOwner, { isParked ->
+            if (!isParked)
+                findNavController().navigate(R.id.action_homeParkedFragment_to_homeUnparkedFragment)
+        })
+
         return inflater.inflate(R.layout.fragment_home_parked, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        topAppBar_parked.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.refresh -> {
+                    viewModel.refreshFragment()
+                    true
+                }
+                else -> false
+            }
+        }
 
         initStats()
 
@@ -56,8 +71,8 @@ class HomeParkedFragment : Fragment() {
                     change_leave_time_button.visibility = View.GONE
                     configureLeaverLeftButton()
                     viewModel.carLeavingLicensePlate.observe(viewLifecycleOwner, { leaverLicensePlate ->
-                        leaver_left_button.text = leaverLicensePlate + "left"
-                        tv_departureTime_prefix.text = "The following car is in the process of leaving:"
+                        leaver_left_button.text = leaverLicensePlate + " left"
+                        tv_departureTime_prefix.text = "Car is leaving now:"
                         tv_departureTime.text = leaverLicensePlate
                         leaver_left_button.visibility = View.VISIBLE
                     })
@@ -72,27 +87,34 @@ class HomeParkedFragment : Fragment() {
             viewModel.leaveNow()
         }
 
+        configureChangeLeaveTimeButton()
+
         viewModel.refreshFragment.observe(viewLifecycleOwner, {
             findNavController().navigate(R.id.action_homeParkedFragment_self)
         })
 
     }
 
+    private fun configureChangeLeaveTimeButton() {
+        TODO("changeleavetime")
+    }
+
     private fun configureLeaverLeftButton() {
         leaver_left_button.setOnClickListener {
             viewModel.cleanQueue()
-            viewModel.refreshFragment()
         }
     }
 
     private fun configureILeftButton() {
         i_left_button.setOnClickListener {
             viewModel.cleanQueue()
-            viewModel.refreshFragment()
         }
     }
 
     private fun initStats() {
+        viewModel.userCarLicensePlate.observe(viewLifecycleOwner, { carLicensePlate ->
+            welcome_greeting.text = "Hello, " + carLicensePlate
+        })
         viewModel.leaveTime.observe(viewLifecycleOwner, { time ->
             tv_departureTime.text = time
         })

@@ -8,6 +8,10 @@ import java.util.*
 object Helper {
 
     fun toStringDateFormat(departureDate: Calendar): String {
+        return toStringDateFormat(departureDate, false)
+    }
+
+    fun toStringDateFormat(departureDate: Calendar, absoluteTime: Boolean): String {
 
         val now = Date()
         // TODO: what if departure time < now? treat it in viewmodel maybe...
@@ -22,12 +26,13 @@ object Helper {
             // TODO: make this more beautiful with DateFormat
             return "" + DateFormat.format("HH:mm, MM-dd", departureDate)
         } else {
+            if (absoluteTime)
+                return "" + DateFormat.format("HH:mm", departureDate)
             if (hours.toInt() == 0)
                 return "" + minutes + "m"
             else
                 return "" + hours + "h " + (minutes - hours * 60) + "m"
         }
-
     }
 
 }

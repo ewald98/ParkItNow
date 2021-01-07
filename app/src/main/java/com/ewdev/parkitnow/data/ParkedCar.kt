@@ -13,7 +13,9 @@ data class ParkedCar(
         val licensePlate: String,
         val departureTime: Calendar,
         val roots: List<String>,
-        val blocking: List<String>
+        val blocking: List<String>,
+        @field:JvmField
+        val isParked: Boolean
 ) : Parcelable {
 
     companion object {
@@ -23,8 +25,9 @@ data class ParkedCar(
             val roots: List<String> = get("roots") as List<String>
             val departureTime = Calendar.getInstance()
             departureTime.time = getDate("departureTime")!!
+            val isParked = getBoolean("isParked")!!
             // TODO?: add phoneNO -> idk...
-            return ParkedCar(id, departureTime, roots, blocking)
+            return ParkedCar(id, departureTime, roots, blocking, isParked)
         }
 
         fun ParkedCar.toFirebaseFormat(): HashMap<String, Any> {
@@ -33,6 +36,7 @@ data class ParkedCar(
             firebaseCar.put("blocking", blocking)
             firebaseCar.put("departureTime", Timestamp(departureTime.time))
             firebaseCar.put("roots", roots)
+            firebaseCar.put("isParked", isParked)
 
             return firebaseCar
         }
@@ -49,6 +53,7 @@ data class ParkedCar(
         if (departureTime != other.departureTime) return false
         if (roots != other.roots) return false
         if (blocking != other.blocking) return false
+        if (isParked != other.isParked) return false
 
         return true
     }

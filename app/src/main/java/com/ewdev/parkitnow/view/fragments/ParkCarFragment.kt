@@ -111,7 +111,9 @@ class ParkCarFragment: Fragment() {
 
         fab_next.setOnClickListener {
             viewModel.parkCar()
-            findNavController().navigate(R.id.action_parkCarFragment_to_homeParkedFragment)
+            viewModel.changesCommited.observe(viewLifecycleOwner, {
+                findNavController().navigate(R.id.action_parkCarFragment_to_homeParkedFragment)
+            })
         }
     }
 

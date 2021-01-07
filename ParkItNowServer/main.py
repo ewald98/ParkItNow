@@ -223,19 +223,34 @@ def on_snapshot(doc_snapshot, changes, read_time):
                     cars.update({change.document.id, change.document._data})
                 else:
                     # TODO: sb entered a new queue:
-
-                    # sb changed the time when he leaves:
                     leave_time: DatetimeWithNanoseconds = change.document._data['departureTime']
-                    if abs(cars[change.document.id]['departureTime'] - leave_time) > datetime.timedelta(seconds=1):
-                        # 1) sb leaves now
+                    old_leave_time: DatetimeWithNanoseconds = cars[change.document.id]['departureTime']
+                    if (cars[change.document.id]['isParked'] == False and
+                            change.document._data['isParked'] == True):
+                        cars.update({change.document.id, change.document._data})
+                    # sb changed the time when he leaves:
+                    elif abs(old_leave_time - leave_time) > datetime.timedelta(seconds=1):
                         now = DatetimeWithNanoseconds.now(tz=datetime.timezone.utc)
+                        # 1) sb leaves now
                         if abs(leave_time - now) < datetime.timedelta(minutes=1):
                             blockers = get_blockers_of(change.document.id)
                             notify_blockers(blockers, change.document.id)
+
+                            user_doc = db.collection(u"users").where(u'selectedCar', u'==', change.document.id).get()[0]
+                            docs = get_user_docs((blockers))
+                            # update to leaving and to leave_announcer
+                            user_doc.reference.update({u'leaver': True})
+                            for doc in docs:
+                                doc.reference.update({u'leaveAnnouncer': True})
                         # 2) sb leaves later
-                        #   don't care
+                        elif old_leave_time < leave_time:
+                            cars.update({change.document.id, change.document._data})
                         # 3) sb leaves sooner
-                        #   don't care
+                        elif old_leave_time > leave_time:
+                            cars.update({change.document.id, change.document._data})
+                        # 4) shouldn't get here
+                        else:
+                            pass
 
     callback_done.set()
 

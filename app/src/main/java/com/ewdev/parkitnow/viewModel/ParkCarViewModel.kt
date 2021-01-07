@@ -20,6 +20,8 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
     val leaveTime: MutableLiveData<Calendar> = MutableLiveData()
     val blockedCars: MutableLiveData<List<ParkedCar>> = MutableLiveData()
 
+    val changesCommited: MutableLiveData<Unit> = MutableLiveData()
+
     val _blockedCars: ArrayList<ParkedCar> = ArrayList()
 
 
@@ -62,22 +64,38 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
 
             // get roots from all blocked cars
             val roots = _blockedCars
-                    .map { car -> car.roots }
-                    .flatten()
-                    .distinct()
-                    .ifEmpty {
-                        listOf(user.selectedCar)
-                    }
+                .map { car -> car.roots }
+                .flatten()
+                .distinct()
+                .ifEmpty {
+                    listOf(user.selectedCar)
+                }
 
             val blocking = _blockedCars
-                    .map { car -> car.licensePlate }
+                .map { car -> car.licensePlate }
 
-            FirebaseService.updateCar(ParkedCar(
+            FirebaseService.updateCar(
+                ParkedCar(
                     user.selectedCar!!,
                     leaveTime.value!!,
                     roots as List<String>,
-                    blocking
-            ))
+                    blocking,
+                    true
+                )
+            )
+
+            FirebaseService.updateUser(
+                User(
+                    user.uid!!,
+                    user.phoneNo!!,
+                    user.selectedCar!!,
+                    user.token!!,
+                    true,
+                    false,
+                    false
+                )
+            )
+            changesCommited.postValue(Unit)
 
         }
     }

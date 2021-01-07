@@ -54,6 +54,16 @@
             app:destination="@id/homeParkedFragment"
             app:popUpTo="@id/homeParkedFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeParkedFragment_to_homeUnparkedFragment"
+            app:destination="@id/homeUnparkedFragment" />
+        <action
+            android:id="@+id/action_homeParkedFragment_to_changeLeaveTimeFragment"
+            app:destination="@id/changeLeaveTimeFragment" />
+        <!--        <argument-->
+<!--            android:name="leaverLicensePlate"-->
+<!--            app:argType="string"-->
+<!--            app:nullable="true" />-->
     </fragment>
     <fragment
         android:id="@+id/parkCarFragment"
@@ -99,5 +109,13 @@
         <action
             android:id="@+id/action_settingsFragment_to_homeUnparkedFragment"
             app:destination="@id/homeUnparkedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeLeaveTimeFragment"
+        android:name="com.ewdev.parkitnow.view.fragments.ChangeLeaveTimeFragment"
+        android:label="ChangeLeaveTimeFragment" >
+        <action
+            android:id="@+id/action_changeLeaveTimeFragment_to_homeParkedFragment"
+            app:destination="@id/homeParkedFragment" />
     </fragment>
 </navigation>

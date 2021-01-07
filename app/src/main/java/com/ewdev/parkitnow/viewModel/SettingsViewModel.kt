@@ -27,7 +27,8 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                                     licensePlate,
                                     Calendar.getInstance(),
                                     listOf(),
-                                    listOf()
+                                    listOf(),
+                                    false   // must be false
                                 )
                             )
                     updateUser(
@@ -59,7 +60,8 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                     licensePlate,
                     Calendar.getInstance(),
                     listOf(),
-                    listOf()
+                    listOf(),
+                    false   // must be false
                 )
             )
             FirebaseService.updateUser(

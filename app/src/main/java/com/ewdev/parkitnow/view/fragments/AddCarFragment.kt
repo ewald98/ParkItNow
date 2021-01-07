@@ -30,27 +30,27 @@ class AddCarFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.validCar.observe(viewLifecycleOwner, { valid ->
+            if (valid) {
+                viewModel.car.observe(viewLifecycleOwner, { car ->
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set("car", car)
+                    findNavController().popBackStack()
+                })
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    "Invalid car",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
         fab_finish.setOnClickListener {
 
             val carText = add_car_edtx.text.toString()
             // TODO("verify car license plate format")
 
             viewModel.requestCarValidity(carText)
-            viewModel.validCar.observe(viewLifecycleOwner, androidx.lifecycle.Observer { valid ->
-                if (valid) {
-                    viewModel.car.observe(viewLifecycleOwner, androidx.lifecycle.Observer { car ->
-                        findNavController().previousBackStackEntry?.savedStateHandle?.set("car", car)
-                        findNavController().popBackStack()
-                    })
-                } else {
-                    Toast.makeText(
-                            requireActivity(),
-                            "Invalid car " + carText,
-                            Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-
 
 //            onDestroy()
         }
