@@ -102,6 +102,10 @@ class ParkCarFragment: Fragment() {
             findNavController().navigate(R.id.action_parkCarFragment_to_addCarFragment)
         }
 
+        fab_add_camera.setOnClickListener {
+            findNavController().navigate(R.id.action_parkCarFragment_to_addCarCameraFragment)
+        }
+
         initList()
 
         // TODO("fix navigation, currently when popping backstack weird things happen, for example pressing the back button makes the past arg remain and so we end up with two same licensePlates")
