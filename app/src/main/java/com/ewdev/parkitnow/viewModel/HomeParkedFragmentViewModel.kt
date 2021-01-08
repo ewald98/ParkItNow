@@ -102,7 +102,7 @@ class HomeParkedFragmentViewModel(application: Application) : AndroidViewModel(a
         blockedCars
             .sortWith(compareByDescending { car -> car.departureTime })
 
-        val blockedCars2: ArrayList<RelativeParkedCar> = blockedCars
+        return blockedCars
             .asReversed()
             .map { car ->
                 RelativeParkedCar(
@@ -110,8 +110,6 @@ class HomeParkedFragmentViewModel(application: Application) : AndroidViewModel(a
                     Helper.toStringDateFormat(car.departureTime)
                 )
             } as ArrayList<RelativeParkedCar>
-
-        return blockedCars2
     }
 
     fun leaveNow() {

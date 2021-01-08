@@ -58,6 +58,7 @@ object FirebaseService {
     suspend fun getCars(roots: List<String>): List<ParkedCar> {
         return db
                 .collection("cars")
+                .whereEqualTo("isParked", true)
                 .whereArrayContainsAny("roots", roots)
                 .get()
                 .await()
