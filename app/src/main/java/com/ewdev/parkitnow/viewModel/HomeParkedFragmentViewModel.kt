@@ -53,7 +53,10 @@ class HomeParkedFragmentViewModel(application: Application) : AndroidViewModel(a
 
         viewModelScope.launch {
             user = FirebaseService.getUser(firebaseUser!!.uid)!!
-            _isParked.value = user.isParked
+            if (!user.isParked) {
+                _isParked.value = user.isParked
+                return@launch
+            }
 
             userCar = FirebaseService.getCar(user.selectedCar!!)!!
             _userCarLicensePlate.value = userCar.licensePlate

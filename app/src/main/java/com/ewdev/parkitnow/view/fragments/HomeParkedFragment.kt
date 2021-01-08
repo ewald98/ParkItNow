@@ -124,9 +124,11 @@ class HomeParkedFragment : Fragment() {
     private fun initLists() {
         rv_blocked_cars_list.apply {
             layoutManager = LinearLayoutManager(requireActivity())
+            isNestedScrollingEnabled = false
         }
         rv_blocker_cars_list.apply {
             layoutManager = LinearLayoutManager(requireActivity())
+            isNestedScrollingEnabled = false
         }
 
         viewModel.blockedCars.observe(viewLifecycleOwner, { cars ->
