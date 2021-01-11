@@ -88,7 +88,7 @@ class HomeParkedFragment : Fragment() {
             viewModel.leaveNow()
         }
 
-//        configureChangeLeaveTimeButton()
+        configureChangeLeaveTimeButton()
 
         viewModel.refreshFragment.observe(viewLifecycleOwner, {
             findNavController().navigate(R.id.action_homeParkedFragment_self)
@@ -97,7 +97,9 @@ class HomeParkedFragment : Fragment() {
     }
 
     private fun configureChangeLeaveTimeButton() {
-        TODO("changeleavetime")
+        change_leave_time_button.setOnClickListener {
+            findNavController().navigate(R.id.action_homeParkedFragment_to_changeLeaveTimeFragment)
+        }
     }
 
     private fun configureLeaverLeftButton() {
