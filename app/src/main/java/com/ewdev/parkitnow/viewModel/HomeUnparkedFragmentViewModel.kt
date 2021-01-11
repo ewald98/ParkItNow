@@ -41,4 +41,8 @@ class HomeUnparkedFragmentViewModel(application: Application): AndroidViewModel(
     fun refreshFragment() {
         _refreshFragment.postValue(Unit)
     }
+
+    fun logOut() {
+        FirebaseAuth.getInstance().signOut()
+    }
 }

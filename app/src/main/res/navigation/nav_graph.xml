@@ -97,6 +97,9 @@
         <action
             android:id="@+id/action_homeUnparkedFragment_self"
             app:destination="@id/homeUnparkedFragment" />
+        <action
+            android:id="@+id/action_homeUnparkedFragment_to_phoneAuthenticationFragment"
+            app:destination="@id/phoneAuthenticationFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCarFragment"

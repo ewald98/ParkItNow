@@ -214,4 +214,8 @@ class HomeParkedFragmentViewModel(application: Application) : AndroidViewModel(a
         }
     }
 
+    fun logOut() {
+        FirebaseAuth.getInstance().signOut()
+    }
+
 }

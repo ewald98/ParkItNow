@@ -52,6 +52,11 @@ class HomeParkedFragment : Fragment() {
                     viewModel.refreshFragment()
                     true
                 }
+                R.id.log_out -> {
+                    viewModel.logOut()
+                    findNavController().navigate(R.id.action_homeUnparkedFragment_to_phoneAuthenticationFragment)
+                    true
+                }
                 else -> false
             }
         }
