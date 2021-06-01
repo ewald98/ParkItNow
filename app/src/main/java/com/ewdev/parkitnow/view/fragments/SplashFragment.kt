@@ -18,9 +18,14 @@ import com.ewdev.parkitnow.viewModel.AuthViewModel
 
 class SplashFragment : Fragment() {
 
+    // 1. limba
+    // 2. poza de profil
+    // 3.
+
     // TODO: add countdown timer and resend message
     lateinit var authViewModel: AuthViewModel
 
+//    var done = false
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +35,11 @@ class SplashFragment : Fragment() {
         authViewModel.isLoggedIn.observe(this, Observer { isLoggedIn ->
             Log.i("userIsLogged", isLoggedIn.toString())
             if (isLoggedIn) {
+//                if (isLoggedIn && !done) {
+//                done = true
                 authViewModel.requestIsParked()
                 authViewModel.isParked.observe(viewLifecycleOwner, Observer { isParked ->
+//                    Log.i("called", "once")
                     if (isParked) {
                         findNavController()
                                 .navigate(R.id.action_splashFragment_to_homeParkedFragment)

@@ -35,7 +35,8 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
 
         if (blockedCars.isEmpty())
             return arrayListOf()
-        return blockedCars.distinct() as ArrayList<ParkedCar>
+        val uniqueBlockedCars = ArrayList(blockedCars.distinct())
+        return uniqueBlockedCars as ArrayList<ParkedCar>
 
     }
 

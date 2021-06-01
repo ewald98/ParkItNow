@@ -203,6 +203,7 @@ def on_snapshot(doc_snapshot, changes, read_time):
 
             if change.type.name == 'ADDED':
                 # there's either a new user, or a user changed his car (both unparked)
+                # OOOOR a new car was added...(to a user)
                 cars.update({change.document.id, change.document._data})
 
             elif change.type.name == 'REMOVED':
