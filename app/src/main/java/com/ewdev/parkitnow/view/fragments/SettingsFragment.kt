@@ -35,7 +35,7 @@ class SettingsFragment : Fragment() {
 
         nav_view_settings.setNavigationItemSelectedListener() { menuItem ->
             if (menuItem.itemId == R.id.nav_home) {
-                findNavController().popBackStack()
+                findNavController().navigate(R.id.action_settingsFragment_to_homeUnparkedFragment)
             }
             return@setNavigationItemSelectedListener false
         }
@@ -43,6 +43,11 @@ class SettingsFragment : Fragment() {
         val toggle = ActionBarDrawerToggle(requireActivity(), drawer_layout, topAppBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+
+        viewModel.selectedCar.observe(viewLifecycleOwner, { licensePlate ->
+            if (!licensePlate.isEmpty())
+                tv_car_license_plate.text = licensePlate
+        })
 
         viewModel.changesCommited.observe(viewLifecycleOwner, { success ->
             if (!success)

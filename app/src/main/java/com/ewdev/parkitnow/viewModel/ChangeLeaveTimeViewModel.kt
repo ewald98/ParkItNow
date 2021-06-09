@@ -19,10 +19,7 @@ class ChangeLeaveTimeViewModel(application: Application) : AndroidViewModel(appl
     private lateinit var user: User
 
     val leaveTime: MutableLiveData<Calendar> = MutableLiveData()
-
     val changesCommited: MutableLiveData<Unit> = MutableLiveData()
-
-
 
     init {
         val auth = FirebaseAuth.getInstance()

@@ -170,6 +170,11 @@ class HomeParkedFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshFragment()
+    }
+
     private fun callUser(licensePlate: String) {
         viewModel.getUserPhoneNumber(licensePlate)
         viewModel.phoneNo.observe(viewLifecycleOwner, { phoneNo ->

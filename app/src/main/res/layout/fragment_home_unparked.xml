@@ -72,7 +72,7 @@
 
                 android:layout_marginBottom="20dp"
                 android:layout_weight="10"
-                android:text="Here are your stats:"
+                android:text="Welcome!"
                 android:textColor="@color/white" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Total cars blocked:"
+                    android:text="Times in queue:"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:text="+3 ParkItNows"
+                    android:text="0 ParkItNows"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:fontFamily="sans-serif"
-                    android:text="42"
+                    android:text="0"
                     android:textColor="@color/blue"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"

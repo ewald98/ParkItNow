@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ewdev.parkitnow.R
+import com.ewdev.parkitnow.utils.Constants
 import com.ewdev.parkitnow.view.fragments.PhoneAuthenticationFragmentDirections
 import kotlinx.android.synthetic.main.fragment_phone_authentication.*
 
@@ -29,12 +31,15 @@ class PhoneAuthenticationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         next_button.setOnClickListener {
-            // TODO: add more conditition for phone_number to be correct
-            val phoneNumber = "+4" + phone_number.text.toString().trim()
+            val phoneNumber = Constants.PHONE_NO_COUNTRY_PREFIX + phone_number.text.toString().trim()
             Log.i("phone_number", phoneNumber)
 
-            val action = PhoneAuthenticationFragmentDirections.actionPhoneAuthenticationFragmentToPhoneVerificationFragment(phoneNumber)
-            findNavController().navigate(action)
+            if (phoneNumber.length != Constants.PHONE_NO_LENGTH) {
+                Toast.makeText(requireContext(), "Invalid phone number!", Toast.LENGTH_SHORT).show()
+            } else {
+                val action = PhoneAuthenticationFragmentDirections.actionPhoneAuthenticationFragmentToPhoneVerificationFragment(phoneNumber)
+                findNavController().navigate(action)
+            }
         }
 
 

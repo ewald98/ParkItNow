@@ -13,12 +13,21 @@ import java.util.*
 
 class SettingsViewModel(application: Application): AndroidViewModel(application) {
 
+    private lateinit var user: User
+
     val changesCommited: MutableLiveData<Boolean> = MutableLiveData()
+    val selectedCar: MutableLiveData<String> = MutableLiveData()
+
+    init {
+        viewModelScope.launch {
+            user = FirebaseService.getUser(FirebaseAuth.getInstance().currentUser!!.uid)!!
+            selectedCar.value = user!!.selectedCar!!
+        }
+    }
 
     fun setCarLicensePlate(licensePlate: String) {
 
         viewModelScope.launch {
-            val user = FirebaseService.getUser(FirebaseAuth.getInstance().currentUser!!.uid)
 
             if (user!!.selectedCar!!.isEmpty()) {
                 FirebaseService.run {
@@ -43,10 +52,10 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                                 )
                             )
                 }
+                selectedCar.value = licensePlate
                 changesCommited.value = true
                 return@launch
             }
-
 
             if (FirebaseService.exists(licensePlate)) {
                 changesCommited.value = false
@@ -75,6 +84,7 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                     user.leaver
                 )
             )
+            selectedCar.value = licensePlate
             changesCommited.value = true
         }
     }

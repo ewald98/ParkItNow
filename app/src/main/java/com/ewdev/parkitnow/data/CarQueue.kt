@@ -73,6 +73,7 @@ class CarQueue(val carQueue: HashMap<String, ParkedCar>, val roots: List<String>
 
         val blockedCarsByUser = getBlockedCars(carLicensePlate)
 
+        // so it returns all possible cars that block you
         return paths
                 .flatten()
                 .distinct()
