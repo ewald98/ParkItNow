@@ -16,18 +16,18 @@ import com.ewdev.parkitnow.R
 import com.ewdev.parkitnow.data.BlockedCarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.BlockerCarsRecycleViewAdapter
 import com.ewdev.parkitnow.data.CarState
-import com.ewdev.parkitnow.viewModel.HomeParkedFragmentViewModel
+import com.ewdev.parkitnow.viewModel.HomeParkedViewModel
 import kotlinx.android.synthetic.main.fragment_home_parked.*
 
 class HomeParkedFragment : Fragment() {
 
-    lateinit var viewModel: HomeParkedFragmentViewModel
+    lateinit var viewModel: HomeParkedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel = ViewModelProvider(this).get(HomeParkedFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeParkedViewModel::class.java)
     }
 
     override fun onCreateView(

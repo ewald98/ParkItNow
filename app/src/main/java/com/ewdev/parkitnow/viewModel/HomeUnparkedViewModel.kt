@@ -12,7 +12,7 @@ import com.ewdev.parkitnow.utils.Helper
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
-class HomeUnparkedFragmentViewModel(application: Application): AndroidViewModel(application) {
+class HomeUnparkedViewModel(application: Application): AndroidViewModel(application) {
 
     val firebaseUser = FirebaseAuth.getInstance().currentUser
 

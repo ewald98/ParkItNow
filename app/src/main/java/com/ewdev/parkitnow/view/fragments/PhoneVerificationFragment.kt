@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -20,9 +21,6 @@ import java.util.concurrent.TimeUnit
 class PhoneVerificationFragment : Fragment() {
 
     private lateinit var phoneVerificationViewModel: PhoneVerificationViewModel
-//    private lateinit var binding: FragmentPhoneVerificationBinding
-
-    // TODO: shouldn't be able to get to this fragment after getting to home
 
     val args: PhoneVerificationFragmentArgs by navArgs()
 
@@ -38,16 +36,6 @@ class PhoneVerificationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-//  TODO: Try this data binding thing
-//        binding = DataBindingUtil.inflate(
-//            inflater,
-//            R.layout.fragment_phone_verification,
-//            container,
-//            false
-//        )
-//
-//        binding.phoneVerificationViewModel = phoneVerificationViewModel
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_phone_verification, container, false)
@@ -76,7 +64,7 @@ class PhoneVerificationFragment : Fragment() {
                     }
                 })
             } else {
-
+                Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -98,7 +86,12 @@ class PhoneVerificationFragment : Fragment() {
             }
         }
 
+        phoneVerificationViewModel.verificationFailed.observe(viewLifecycleOwner, { message ->
+            Toast.makeText(requireContext(), "Invalid code!", Toast.LENGTH_SHORT).show()
+        })
+
         phoneVerificationViewModel.requestAuthOptions()
+
     }
 
 }

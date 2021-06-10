@@ -1,5 +1,6 @@
 package com.ewdev.parkitnow.viewModel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -8,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ewdev.parkitnow.services.FirebaseService
 import com.ewdev.parkitnow.data.User
+import com.ewdev.parkitnow.utils.Constants
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.messaging.FirebaseMessaging
@@ -19,6 +21,7 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
 
     val smsCode: MutableLiveData<String> = MutableLiveData()
     val phoneVerified: MutableLiveData<Boolean> = MutableLiveData()
+    val verificationFailed: MutableLiveData<String> = MutableLiveData()
 
     val callbackLiveData: MutableLiveData<PhoneAuthProvider.OnVerificationStateChangedCallbacks> =
         MutableLiveData()
@@ -28,12 +31,12 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
 
     private var user: User? = null
 
-    var codeGenerated: String = "123456"
+    var codeGenerated: String = Constants.DEFAULT_SMS_GENERATED_CODE
+    @SuppressLint("StaticFieldLeak")
     val context = getApplication<Application>().applicationContext
 
     init {
-        requestAuthOptions()
-
+//        requestAuthOptions()
     }
 
     fun requestAuthOptions() {
@@ -50,7 +53,6 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
         override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
             super.onCodeSent(p0, p1)
             codeGenerated = p0
-
         }
 
         override fun onVerificationCompleted(p0: PhoneAuthCredential) {
@@ -64,8 +66,7 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
         override fun onVerificationFailed(p0: FirebaseException) {
             Log.d("PhoneVerification", p0.toString())
 
-            // TODO: send toast
-//            Toast.makeText(requireContext(), p0.message, Toast.LENGTH_SHORT).show()
+            verificationFailed.value = p0.message
         }
     }
 
@@ -93,7 +94,6 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
                         if (user == null) {
 
                             val token = FirebaseMessaging.getInstance().token.await()
-
                             val addedUser = FirebaseService.addNewUser(
                                 auth.currentUser!!.uid,
                                 phoneNumber,
@@ -102,12 +102,24 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
                             if (addedUser)
                                 _isParked.value = false
 
-
                             // Log and toast
 //                                    val msg = getString(R.string.msg_token_fmt, token)
 //                                    Log.d(TAG, msg)
 
                         } else {
+                            val newToken = FirebaseMessaging.getInstance().token.await()
+                            FirebaseService.updateUser(
+                                User(
+                                    user!!.uid,
+                                    phoneNumber,
+                                    user!!.selectedCar,
+                                    newToken,
+                                    user!!.isParked,
+                                    user!!.leaveAnnouncer,
+                                    user!!.leaver
+                                )
+                            )
+
                             _isParked.value = user!!.isParked
                         }
                     }
@@ -119,11 +131,12 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
                     // Sign in failed, display a message and update the UI
                     Log.w("signIn", "signInWithCredential:failure", task.exception)
 
-                    phoneVerified.value = false
 
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
-//                        Toast.makeText(context as Activity, "Verification Invalid", Toast.LENGTH_SHORT).show()
+                        verificationFailed.value = task.toString()
+                    } else {
+                        phoneVerified.value = false
                     }
                 }
             }

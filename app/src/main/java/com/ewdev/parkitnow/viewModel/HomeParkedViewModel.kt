@@ -15,7 +15,7 @@ import java.lang.Math.abs
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HomeParkedFragmentViewModel(application: Application) : AndroidViewModel(application) {
+class HomeParkedViewModel(application: Application) : AndroidViewModel(application) {
 
     private lateinit var carQueue: CarQueue
     private lateinit var rawBlockedCars: ArrayList<ParkedCar>

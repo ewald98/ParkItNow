@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ewdev.parkitnow.R
-import com.ewdev.parkitnow.viewModel.HomeUnparkedFragmentViewModel
+import com.ewdev.parkitnow.viewModel.HomeUnparkedViewModel
 import kotlinx.android.synthetic.main.fragment_home_unparked.*
 import kotlinx.android.synthetic.main.fragment_home_unparked.topAppBar
 
@@ -16,13 +16,13 @@ import kotlinx.android.synthetic.main.fragment_home_unparked.topAppBar
 class HomeUnparkedFragment: Fragment() {
 
 //    private val mToolbar: MaterialToolbar
-    lateinit var viewModel: HomeUnparkedFragmentViewModel
+    lateinit var viewModel: HomeUnparkedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel = ViewModelProvider(this).get(HomeUnparkedFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeUnparkedViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
