@@ -15,7 +15,8 @@ data class User(
     @field:JvmField
     val leaveAnnouncer: Boolean,
     @field:JvmField
-    val leaver: Boolean
+    val leaver: Boolean,
+    val timesInQueue: Long
 ) : Parcelable {
 
     companion object {
@@ -27,8 +28,9 @@ data class User(
             val isParked = getBoolean("isParked")!!
             val leaver = getBoolean("leaver")!!
             val leaveAnnouncer = getBoolean("leaveAnnouncer")!!
+            val timesInQueue = getLong("timesInQueue")!!
             // document id is uid
-            return User(id, phoneNo, selectedCar, token, isParked, leaveAnnouncer, leaver)
+            return User(id, phoneNo, selectedCar, token, isParked, leaveAnnouncer, leaver, timesInQueue)
         }
 
         fun User.toFirebaseFormat(): HashMap<String, Any> {
@@ -40,6 +42,7 @@ data class User(
             firebaseUser.put("isParked", isParked)
             firebaseUser.put("leaver", leaver)
             firebaseUser.put("leaveAnnouncer", leaveAnnouncer)
+            firebaseUser.put("timesInQueue", timesInQueue)
 
             return firebaseUser
         }

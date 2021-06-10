@@ -71,6 +71,10 @@ class HomeUnparkedFragment: Fragment() {
         viewModel.userCarLicensePlate.observe(viewLifecycleOwner, { carLicensePlate ->
             welcome_greeting_unparked.text = "Hello, " + carLicensePlate
         })
+
+        viewModel.timesInQueue.observe(viewLifecycleOwner, { timesInQueue ->
+            tv_times_in_queue.text = timesInQueue.toString()
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

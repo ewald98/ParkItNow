@@ -132,7 +132,8 @@ class HomeParkedViewModel(application: Application) : AndroidViewModel(applicati
                     user.token,
                     true,
                     false,
-                    true
+                    true,
+                    user.timesInQueue
                 )
             )
             refreshFragment()
@@ -173,7 +174,8 @@ class HomeParkedViewModel(application: Application) : AndroidViewModel(applicati
                     leaverUser.token,
                     false,  // no longer parked
                     false,
-                    false
+                    false,
+                    leaverUser.timesInQueue
                 )
             )
             FirebaseService.updateCar(
@@ -196,7 +198,8 @@ class HomeParkedViewModel(application: Application) : AndroidViewModel(applicati
                         blockerUser.token,
                         false,  // no longer parked
                         false,
-                        false
+                        false,
+                        blockerUser.timesInQueue
                     )
                 )
                 FirebaseService.updateCar(

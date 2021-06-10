@@ -60,7 +60,8 @@ class ChangeLeaveTimeViewModel(application: Application) : AndroidViewModel(appl
                     user.token,
                     true,
                     false,
-                    false
+                    false,
+                    user.timesInQueue
                 )
             )
             changesCommited.postValue(Unit)

@@ -57,13 +57,13 @@ object FirebaseService {
      */
     suspend fun getCars(roots: List<String>): List<ParkedCar> {
         return db
-                .collection("cars")
-                .whereEqualTo("isParked", true)
-                .whereArrayContainsAny("roots", roots)
-                .get()
-                .await()
-                .documents
-                .map { doc -> doc.toParkedCar() }
+            .collection("cars")
+            .whereEqualTo("isParked", true)
+            .whereArrayContainsAny("roots", roots)
+            .get()
+            .await()
+            .documents
+            .map { doc -> doc.toParkedCar() }
     }
 
     suspend fun exists(licensePlate: String): Boolean {
@@ -91,10 +91,10 @@ object FirebaseService {
 
     suspend fun updateCar(car: ParkedCar) {
         db
-                .collection("cars")
-                .document(car.licensePlate)
-                .update(car.toFirebaseFormat())
-                .await()
+            .collection("cars")
+            .document(car.licensePlate)
+            .update(car.toFirebaseFormat())
+            .await()
     }
 
     suspend fun setCar(car: ParkedCar) {
@@ -124,20 +124,21 @@ object FirebaseService {
     suspend fun addNewUser(uid: String, phoneNo: String, token: String): Boolean {
         try {
             db
-                    .collection("users")
-                    .document(uid)
-                    .set(
-                            User(
-                                    uid,
-                                    phoneNo,
-                                    "",
-                                    token,
-                                    false,
-                                    false,
-                                    false
-                            ).toFirebaseFormat()
-                    )
-                    .await()
+                .collection("users")
+                .document(uid)
+                .set(
+                    User(
+                        uid,
+                        phoneNo,
+                        "",
+                        token,
+                        false,
+                        false,
+                        false,
+                        0L
+                    ).toFirebaseFormat()
+                )
+                .await()
             return true
         } catch (e: Exception) {
             return false

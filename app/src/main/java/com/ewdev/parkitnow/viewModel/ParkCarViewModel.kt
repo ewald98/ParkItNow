@@ -92,7 +92,8 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
                     user.token!!,
                     true,
                     false,
-                    false
+                    false,
+                    user.timesInQueue + 1
                 )
             )
             changesCommited.postValue(Unit)

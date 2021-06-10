@@ -21,14 +21,17 @@ class HomeUnparkedViewModel(application: Application): AndroidViewModel(applicat
 
     private val _userCarLicensePlate: MutableLiveData<String> = MutableLiveData()
     private val _refreshFragment: MutableLiveData<Unit> = MutableLiveData()
+    private val _timesInQueue: MutableLiveData<Long> = MutableLiveData()
 
     val userCarLicensePlate: LiveData<String> get() = _userCarLicensePlate
     val refreshFragment: MutableLiveData<Unit> get() = _refreshFragment
+    val timesInQueue: MutableLiveData<Long> get() = _timesInQueue
 
     init {
         viewModelScope.launch {
             user = FirebaseService.getUser(firebaseUser!!.uid)!!
 
+            _timesInQueue.value = user.timesInQueue
             if (user.selectedCar == "")
                 _userCarLicensePlate.value = "please set your car"
             else {

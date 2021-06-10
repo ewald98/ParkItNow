@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.util.*
 
-class SettingsViewModel(application: Application): AndroidViewModel(application) {
+class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
     private lateinit var user: User
 
@@ -32,25 +32,26 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
             if (user!!.selectedCar!!.isEmpty()) {
                 FirebaseService.run {
                     setCar(
-                                ParkedCar(
-                                    licensePlate,
-                                    Calendar.getInstance(),
-                                    listOf(),
-                                    listOf(),
-                                    false   // must be false
-                                )
-                            )
+                        ParkedCar(
+                            licensePlate,
+                            Calendar.getInstance(),
+                            listOf(),
+                            listOf(),
+                            false   // must be false
+                        )
+                    )
                     updateUser(
-                                User(
-                                    user.uid,
-                                    user.phoneNo,
-                                    licensePlate,
-                                    user.token,
-                                    false,
-                                    user.leaveAnnouncer,
-                                    user.leaver
-                                )
-                            )
+                        User(
+                            user.uid,
+                            user.phoneNo,
+                            licensePlate,
+                            user.token,
+                            false,
+                            user.leaveAnnouncer,
+                            user.leaver,
+                            user.timesInQueue
+                        )
+                    )
                 }
                 selectedCar.value = licensePlate
                 changesCommited.value = true
@@ -81,7 +82,8 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                     user.token,
                     false,
                     user.leaveAnnouncer,
-                    user.leaver
+                    user.leaver,
+                    user.timesInQueue
                 )
             )
             selectedCar.value = licensePlate

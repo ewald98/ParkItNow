@@ -116,7 +116,8 @@ class PhoneVerificationViewModel(application: Application, val phoneNumber: Stri
                                     newToken,
                                     user!!.isParked,
                                     user!!.leaveAnnouncer,
-                                    user!!.leaver
+                                    user!!.leaver,
+                                    user!!.timesInQueue
                                 )
                             )
 
