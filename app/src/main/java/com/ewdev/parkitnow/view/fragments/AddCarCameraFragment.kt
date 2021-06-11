@@ -30,6 +30,8 @@ class AddCarCameraFragment : Fragment() {
 
     lateinit var viewModel: AddCarCameraViewModel
 
+    var car: String = ""
+
     var camera: Camera? = null
     var preview: Preview? = null
     var imageCapture: ImageCapture? = null
@@ -99,7 +101,7 @@ class AddCarCameraFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireActivity(),
-                    "Invalid car",
+                    "Invalid car:" + car,
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -125,10 +127,11 @@ class AddCarCameraFragment : Fragment() {
                         val result = recognizer.process(image)
                             .addOnSuccessListener { visionText ->
 
-                                val resultText = visionText.text.replace(" ", "").replace("RO", "").replace("\n", "")
-                                Log.i("nice", "work")
+                                val resultText = filterTextToLicensePlate(visionText.text)
+                                car = resultText
 
                                 viewModel.requestCarValidity(resultText)
+
                             }
                             .addOnFailureListener {
 
@@ -140,6 +143,10 @@ class AddCarCameraFragment : Fragment() {
                     super.onError(exception)
                 }
             })
+    }
+
+    private fun filterTextToLicensePlate(text: String): String {
+        return text.replace(" ", "").replace("RO", "").replace("Ro", "").replace("\n", "")
     }
 
 }

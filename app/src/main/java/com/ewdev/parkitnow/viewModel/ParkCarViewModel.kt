@@ -16,11 +16,13 @@ import kotlin.collections.ArrayList
 class ParkCarViewModel(application: Application) : AndroidViewModel(application) {
 
     private lateinit var user: User
+    private var timeSet: Boolean = false
 
     val leaveTime: MutableLiveData<Calendar> = MutableLiveData()
     val blockedCars: MutableLiveData<List<ParkedCar>> = MutableLiveData()
 
     val changesCommited: MutableLiveData<Unit> = MutableLiveData()
+    val timeNotSet: MutableLiveData<Unit> = MutableLiveData()
 
     val _blockedCars: ArrayList<ParkedCar> = ArrayList()
 
@@ -35,8 +37,10 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
 
     fun onTimeSet(calendar: Calendar) {
         leaveTime.value = calendar
+        timeSet = true
 
         // TODO: make sure (now < date)
+
     }
 
     fun removeFromList(car: ParkedCar) {
@@ -54,50 +58,49 @@ class ParkCarViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun parkCar() {
-//        _blockedCars
-//        leaveTime
-        GlobalScope.launch {
-            // TODO: make sure date is set
+        if (!timeSet) {
+            timeNotSet.postValue(Unit)
+        } else {
+            GlobalScope.launch {
+                // TODO: update parked in User (FOR DEBUGGING, DO NOT YET)
 
-            // TODO: update parked in User (FOR DEBUGGING, DO NOT YET)
+                // get roots from all blocked cars
+                val roots = _blockedCars
+                    .map { car -> car.roots }
+                    .flatten()
+                    .distinct()
+                    .ifEmpty {
+                        listOf(user.selectedCar)
+                    }
 
+                val blocking = _blockedCars
+                    .map { car -> car.licensePlate }
 
-            // get roots from all blocked cars
-            val roots = _blockedCars
-                .map { car -> car.roots }
-                .flatten()
-                .distinct()
-                .ifEmpty {
-                    listOf(user.selectedCar)
-                }
-
-            val blocking = _blockedCars
-                .map { car -> car.licensePlate }
-
-            FirebaseService.updateCar(
-                ParkedCar(
-                    user.selectedCar!!,
-                    leaveTime.value!!,
-                    roots as List<String>,
-                    blocking,
-                    true
+                FirebaseService.updateCar(
+                    ParkedCar(
+                        user.selectedCar!!,
+                        leaveTime.value!!,
+                        roots as List<String>,
+                        blocking,
+                        true
+                    )
                 )
-            )
 
-            FirebaseService.updateUser(
-                User(
-                    user.uid!!,
-                    user.phoneNo!!,
-                    user.selectedCar!!,
-                    user.token!!,
-                    true,
-                    false,
-                    false,
-                    user.timesInQueue + 1
+                FirebaseService.updateUser(
+                    User(
+                        user.uid!!,
+                        user.phoneNo!!,
+                        user.selectedCar!!,
+                        user.token!!,
+                        true,
+                        false,
+                        false,
+                        user.timesInQueue + 1
+                    )
                 )
-            )
-            changesCommited.postValue(Unit)
+                changesCommited.postValue(Unit)
 
+            }
         }
     }
 

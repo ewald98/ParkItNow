@@ -86,7 +86,6 @@ object FirebaseService {
             return doc.toParkedCar()
         else
             return null
-
     }
 
     suspend fun updateCar(car: ParkedCar) {

@@ -3,6 +3,7 @@ package com.ewdev.parkitnow.view.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -62,10 +63,12 @@ class HomeUnparkedFragment: Fragment() {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        Log.i("am ajuns", "viewc")
         park_car_button.setOnClickListener {
-            Log.i("am ajuns", "clikc")
-            findNavController().navigate(R.id.action_homeUnparkedFragment_to_parkCarFragment)
+            if (welcome_greeting_unparked.text.equals("Hello, please set your car")) {
+                Toast.makeText(requireContext(), "Please set your car license plate before you park!!", Toast.LENGTH_SHORT).show()
+            } else {
+                findNavController().navigate(R.id.action_homeUnparkedFragment_to_parkCarFragment)
+            }
         }
 
         viewModel.userCarLicensePlate.observe(viewLifecycleOwner, { carLicensePlate ->
@@ -74,6 +77,7 @@ class HomeUnparkedFragment: Fragment() {
 
         viewModel.timesInQueue.observe(viewLifecycleOwner, { timesInQueue ->
             tv_times_in_queue.text = timesInQueue.toString()
+            tv_points.text = timesInQueue.toString() + " ParkItNows"
         })
     }
 

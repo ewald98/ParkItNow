@@ -20,6 +20,7 @@ import com.ewdev.parkitnow.data.ParkedCar
 import com.ewdev.parkitnow.viewModel.ParkCarViewModel
 import kotlinx.android.synthetic.main.fragment_park_car.*
 import android.text.format.DateFormat
+import android.widget.Toast
 import java.util.*
 
 class ParkCarFragment: Fragment() {
@@ -54,6 +55,10 @@ class ParkCarFragment: Fragment() {
 
         viewModel.leaveTime.observe(viewLifecycleOwner, Observer { leaveTime ->
             leave_time_tv.text = DateFormat.format("yyyy-MM-dd\n HH:mm:ss", leaveTime)
+        })
+
+        viewModel.timeNotSet.observe(viewLifecycleOwner, {
+            Toast.makeText(requireContext(), "Please set departure time!", Toast.LENGTH_SHORT).show()
         })
 
         // TODO: add date

@@ -32,9 +32,9 @@ class HomeUnparkedViewModel(application: Application): AndroidViewModel(applicat
             user = FirebaseService.getUser(firebaseUser!!.uid)!!
 
             _timesInQueue.value = user.timesInQueue
-            if (user.selectedCar == "")
+            if (user.selectedCar == "") {
                 _userCarLicensePlate.value = "please set your car"
-            else {
+            } else {
                 userCar = FirebaseService.getCar(user.selectedCar!!)!!
                 _userCarLicensePlate.value = userCar.licensePlate
             }
