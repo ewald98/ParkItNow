@@ -166,7 +166,7 @@ def get_blockers_of(car_id_changed):
     return blockers
 
 
-def notify_blockers(blockers, car_id_changed):
+def notify_blockers_now(blockers, car_id_changed):
     tokens = []
     for blocker in blockers:
         print("BLOCKER:", blocker)
@@ -214,7 +214,7 @@ def on_snapshot(doc_snapshot, changes, read_time):
                 #
                 if change.document.id not in cars:
                     # somebody just added a new car
-                    cars.update({change.document.id, change.document._data})
+                    cars.update({change.document.id: change.document._data})
                 else:
                     # TODO: sb entered a new queue:
                     leave_time: DatetimeWithNanoseconds = change.document._data['departureTime']
@@ -229,7 +229,7 @@ def on_snapshot(doc_snapshot, changes, read_time):
                         if abs(leave_time - now) < datetime.timedelta(minutes=2):
                             print("got here")
                             blockers = get_blockers_of(change.document.id)
-                            notify_blockers(blockers, change.document.id)
+                            notify_blockers_now(blockers, change.document.id)
 
                             user_doc = db.collection(u"users").where(u'selectedCar', u'==', change.document.id).get()[0]
                             docs = get_user_docs((blockers))

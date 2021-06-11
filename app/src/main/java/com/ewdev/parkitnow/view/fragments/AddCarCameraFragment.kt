@@ -146,6 +146,7 @@ class AddCarCameraFragment : Fragment() {
     }
 
     private fun filterTextToLicensePlate(text: String): String {
+        //TODO: search for pattern
         return text.replace(" ", "").replace("RO", "").replace("Ro", "").replace("\n", "")
     }
 
